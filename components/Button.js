@@ -20,21 +20,42 @@ export const ButtonStyle = css`
     ${props => props.$gray && !props.$outline && css`
         background-color: #6D6E71;
         color: #fff;
+        ;
+
+        &:hover {
+            background-color: #BA141A;
+            box-shadow: 0 0 0 2px #fff;
+        }
     `}
     ${props => props.$gray && props.$outline && css`
         background-color: transparent;
         color: #fff;
         border: 1px solid #fff;
+
+        &:hover {
+            background-color: #BA141A;
+            box-shadow: 0 0 0 2px #fff;
+        }
     `}
     ${props => props.$primary && !props.$outline && css`
         background-color: ${primary};
         color: #fff;
         border: 1px solid #6D6E71;
+
+        &:hover {
+            background-color: #BA141A;
+            box-shadow: 0 0 0 2px #fff;
+        }
     `}
     ${props => props.$primary && props.$outline && css`
         background-color: transparent;
         color: ${primary};
         border: 1px solid ${primary};
+
+        &:hover {
+            color: #BA141A;
+            box-shadow: 0 0 0 2px ${primary};
+        }
     `}
     ${props => props.$size === 'l' && css`
         font-size: 1.2rem;

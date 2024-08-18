@@ -7,6 +7,8 @@ const StyleHeader = styled.header`
 `;
 
 const Logo = styled(Link)`
+    display: flex;
+    align-items: center;
     color: #fff;
     text-decoration: none;
 `;
@@ -14,17 +16,26 @@ const Logo = styled(Link)`
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 20px 0;
 `;
 
 const StyleNav = styled.nav`
     display: flex;
     gap: 15px;
+    align-items: center;
+`;
+
+const Img = styled.img`
+    height: 55px;
 `;
 
 const NavLink = styled(Link)`
     color: #aaa;
     text-decoration: none;
+    &:hover {
+        color: #ED1C24;
+    }
 `;
 
 export default function Header() {
@@ -32,13 +43,15 @@ export default function Header() {
         <StyleHeader>
             <Center>
                 <Wrapper>
-                    <Logo href={'/'}>Ecommers</Logo>
+                    <Logo href={'/'}>
+                        <Img src="/img/fondo.png" alt="Logo"/>
+                    </Logo>
                     <StyleNav>
-                        <NavLink href={'/'}>Home</NavLink>
-                        <NavLink href={'/products'}>All products</NavLink>
-                        <NavLink href={'/categories'}>Categories</NavLink>
-                        <NavLink href={'/account'}>Account</NavLink>
-                        <NavLink href={'/cart'}>Cart (0)</NavLink>
+                        <NavLink href={'/'}>Principal</NavLink>
+                        <NavLink href={'/products'}>Todos los productos</NavLink>
+                        <NavLink href={'/categories'}>Categorías</NavLink>
+                        <NavLink href={'/account'}>Cuenta</NavLink>
+                        <NavLink href={'/cart'}>Carrito (0)</NavLink>
                     </StyleNav>
                 </Wrapper>
             </Center>
