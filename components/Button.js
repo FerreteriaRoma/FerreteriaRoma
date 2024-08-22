@@ -16,6 +16,11 @@ export const ButtonStyle = css`
         height: 16px;
         margin-right: 5px;
     }
+
+    ${props => props.block && css`
+        display: block;
+        width: 100%;
+    `}
     
     ${props => props.$gray && !props.$outline && css`
         background-color: #6D6E71;
@@ -27,6 +32,7 @@ export const ButtonStyle = css`
             box-shadow: 0 0 0 2px #fff;
         }
     `}
+
     ${props => props.$gray && props.$outline && css`
         background-color: transparent;
         color: #fff;
@@ -37,6 +43,29 @@ export const ButtonStyle = css`
             box-shadow: 0 0 0 2px #fff;
         }
     `}
+
+    ${props => props.$black && !props.$outline && css`
+        background-color: #000;
+        color: #fff;
+        ;
+
+        &:hover {
+            background-color: #BA141A;
+            box-shadow: 0 0 0 2px #fff;
+        }
+    `}
+
+    ${props => props.$black && props.$outline && css`
+        background-color: transparent;
+        color: #000;
+        border: 1px solid #000;
+
+        &:hover {
+            background-color: #BA141A;
+            box-shadow: 0 0 0 2px #fff;
+        }
+    `}
+    
     ${props => props.$primary && !props.$outline && css`
         background-color: ${primary};
         color: #fff;
@@ -47,6 +76,7 @@ export const ButtonStyle = css`
             box-shadow: 0 0 0 2px #fff;
         }
     `}
+
     ${props => props.$primary && props.$outline && css`
         background-color: transparent;
         color: ${primary};
@@ -57,6 +87,7 @@ export const ButtonStyle = css`
             box-shadow: 0 0 0 2px ${primary};
         }
     `}
+
     ${props => props.$size === 'l' && css`
         font-size: 1.2rem;
         padding: 10px 20px;
