@@ -1,7 +1,7 @@
 import { mongooseConnect } from '@/lib/mongoose';
 import Order from '@/models/Order'; // Asegúrate de usar la exportación por defecto
 import { Product } from '@/models/Product';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
