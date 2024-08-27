@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { Helmet } from "react-helmet";
 import { CartContextProvider } from "@/components/CartContext";
 
+
 const GlobalStyles = createGlobalStyle`
   body{
     background-color: #eeee;
