@@ -93,15 +93,13 @@ export default function CartPage() {
     }
 
     async function handleSubmit(event) {
-        event.preventDefault(); // Previene el envío del formulario de manera tradicional
-        setLoading(true); // Establece el estado de carga en verdadero 
-
+        event.preventDefault();
+        setLoading(true);
+    
         try {
             const response = await fetch('/api/checkout', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name,
                     email,
@@ -111,17 +109,19 @@ export default function CartPage() {
                     products: cartProducts.join(','),
                 })
             });
-
+    
             const result = await response.json();
-
+            console.log('Resultado de la respuesta:', result);
+    
             if (response.ok) {
-                const productDescriptions = products.map((product) => {
+                const productDescriptions = products.map(product => {
                     const quantity = cartProducts.filter(id => id === product._id).length;
                     const totalPrice = quantity * product.price;
                     return `${product.title} x${quantity} - $${totalPrice}`;
                 }).join(',');
+    
                 Swal.fire({
-                    title: 'Orden generada con exito, puede realizar el pago',
+                    title: 'Orden generada con éxito, puede realizar el pago',
                     icon: 'info',
                     html: `<div id="epayco-button-container"></div>`,
                     confirmButtonColor: 'white',
@@ -142,37 +142,37 @@ export default function CartPage() {
                         script.setAttribute('data-epayco-country', 'CO');
                         script.setAttribute('data-epayco-test', 'true');
                         script.setAttribute('data-epayco-external', 'false');
-                        script.setAttribute('data-epayco-ref-payco', result.ref_payco)
+                        script.setAttribute('data-epayco-ref-payco', result.ref_payco);
                         script.setAttribute('data-epayco-response', 'http://localhost:3000/cart');
                         script.setAttribute('data-epayco-confirmation', 'http://localhost:3000/api/confirm-payment');
                         script.setAttribute('data-epayco-methodconfirmation', 'post');
                         script.setAttribute('data-epayco-type-doc-building', 'CC');
                         script.setAttribute('data-epayco-number-doc-building', '123456789');
-
+    
                         document.getElementById('epayco-button-container').appendChild(script);
                     }
                 });
             } else {
                 Swal.fire({
-                    title: 'Algo salio mal',
+                    title: 'Algo salió mal',
                     text: 'Intente nuevamente',
                     icon: 'error',
                     confirmButtonText: 'OK'
-                })
+                });
             }
         } catch (error) {
             console.error('Error enviando el formulario:', error);
-            setSuccessMessage('');
             Swal.fire({
                 title: 'Error enviando el formulario',
                 text: 'Intente nuevamente',
                 icon: 'error',
                 confirmButtonText: 'OK'
-            })
+            });
         } finally {
-            setLoading(false); // Establece el estado de carga en falso después de completar la solicitud
+            setLoading(false);
         }
     }
+    
 
     return (
         <>
