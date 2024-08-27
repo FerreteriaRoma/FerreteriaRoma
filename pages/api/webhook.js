@@ -7,8 +7,8 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    const p_cust_id_cliente = ''; // Reemplaza con tu valor de ePayco
-    const p_key = ''; // Reemplaza con tu valor de ePayco
+    const p_cust_id_cliente = process.env.NEXT_PUBLIC_PRIVATE_CUST_ID_CLIENT; // Reemplaza con tu valor de ePayco
+    const p_key = process.env.NEXT_PUBLIC_P_KEY; // Reemplaza con tu valor de ePayco
 
     const { ref_payco, transaction_id, amount, currency_code, signature, id_invoice, x_response, response_reason_text, approval_code } = req.body;
 
