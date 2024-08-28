@@ -40,9 +40,6 @@ export default async function handler(req, res) {
             }
         }
 
-        export const getServerSideProps = async ({ req, res }) => {
-            const 
-        }
         const generatedRefPayco = uuidv4();
 
         const order = await Order.create({
