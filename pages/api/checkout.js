@@ -1,7 +1,7 @@
 import { mongooseConnect } from '@/lib/mongoose';
-import Order from '@/models/Order'; // Asegúrate de usar la exportación por defecto
+import Order from '@/models/Order';
 import { Product } from '@/models/Product';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     const { name, email, phone, city, streetAddress, products } = req.body;
 
     if (!name || !email || !city || !streetAddress || !products) {
-        return res.status(400).json({ error: 'Por favor por completo el formulario' });
+        return res.status(400).json({ error: 'Por favor complete el formulario' });
     }
 
     try {
@@ -26,18 +26,21 @@ export default async function handler(req, res) {
             const productInfo = productsInfos.find(p => p._id.toString() === productId);
             const quantity = productsIds.filter(id => id === productId).length || 0;
             if (quantity > 0 && productInfo) {
-                line_items.push({
+                const item = {
                     quantity,
                     price_data: {
                         currency: 'COP',
-                        product_data: { name: productInfo.name },
-                        unit_amount: quantity * productInfo.price,
+                        unit_amount: productInfo.price,
+                        product_data: {
+                            name: productInfo.title,
+                        }
                     },
-                });
+                };
+                line_items.push(item);
             }
         }
 
-        const generatedRefPayco = uuidv4();
+        const generatedRefPayco = uuidv4(); // Esto es un UUID simulado, en realidad obtendrás esta referencia de ePayco
 
         const order = await Order.create({
             line_items,

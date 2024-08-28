@@ -11,6 +11,8 @@ const OrderSchema = new Schema({
     StreetAddress: String,
     paid: Boolean,
     ref_payco: String,
+}, {
+    timestamps: true,
 });
 
 const Order = models.Order || model('Order', OrderSchema);

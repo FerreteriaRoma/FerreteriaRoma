@@ -46,7 +46,7 @@ const Box = styled.div`
 `;
 
 export default function CartPage() {
-    const { cartProducts, addProduct, removeProduct } = useContext(CartContext);
+    const { cartProducts, addProduct, removeProduct, clearCart } = useContext(CartContext);
     const [products, setProducts] = useState([]);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -143,8 +143,8 @@ export default function CartPage() {
                         script.setAttribute('data-epayco-test', 'true');
                         script.setAttribute('data-epayco-external', 'false');
                         script.setAttribute('data-epayco-ref-payco', result.ref_payco);
-                        script.setAttribute('data-epayco-response', 'http://localhost:3000/cart');
-                        script.setAttribute('data-epayco-confirmation', 'http://localhost:3000/api/confirm-payment');
+                        script.setAttribute('data-epayco-response', 'https://e-commers-front.vercel.app/pay-response');
+                        script.setAttribute('data-epayco-confirmation', 'http://localhost:3000');
                         script.setAttribute('data-epayco-methodconfirmation', 'post');
                         script.setAttribute('data-epayco-type-doc-building', 'CC');
                         script.setAttribute('data-epayco-number-doc-building', '123456789');
@@ -152,6 +152,7 @@ export default function CartPage() {
                         document.getElementById('epayco-button-container').appendChild(script);
                     }
                 });
+                
             } else {
                 Swal.fire({
                     title: 'Algo salió mal',
