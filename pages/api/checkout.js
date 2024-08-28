@@ -40,7 +40,10 @@ export default async function handler(req, res) {
             }
         }
 
-        const generatedRefPayco = uuidv4(); // Esto es un UUID simulado, en realidad obtendrás esta referencia de ePayco
+        export const getServerSideProps = async ({ req, res }) => {
+            const 
+        }
+        const generatedRefPayco = uuidv4();
 
         const order = await Order.create({
             line_items,

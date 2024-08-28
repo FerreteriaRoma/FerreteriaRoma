@@ -72,7 +72,7 @@ export default function PayResponsePage({ infoPay }) {
   );
 }
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ req, query }) {
   const { ref_payco = '' } = query;
   const { data } = await tiendaApi.get(`https://secure.epayco.co/validation/v1/reference/${ref_payco}`);
 
