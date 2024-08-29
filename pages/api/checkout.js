@@ -2,7 +2,7 @@ import { mongooseConnect } from '@/lib/mongoose';
 import Order from '@/models/Order';
 import { Product } from '@/models/Product';
 import { v4 as uuidv4 } from 'uuid';
-
+// reseteo y ya
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
