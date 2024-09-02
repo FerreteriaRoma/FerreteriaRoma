@@ -14,6 +14,14 @@ export async function POST(req) {
 
   // Generar la firma esperada
   const signature = hash('sha256', `${p_cust_id_cliente}^${p_key}^${x_ref_payco}^${x_transaction_id}^${x_amount}^${x_currency_code}`);
+  console.log('URL Parameters:', {
+    x_ref_payco,
+    x_transaction_id,
+    x_amount,
+    x_currency_code,
+    x_signature,
+  });
+  
   console.log('Firma generada:', signature);
 
   // Validar firma

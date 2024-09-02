@@ -1,4 +1,3 @@
-// pages/response.js
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -57,6 +56,14 @@ const Response = () => {
       } else {
         setError('Faltan parámetros necesarios.');
       }
+      console.log('URL Parameters:', {
+        refPayco,
+        transactionId,
+        amount,
+        currencyCode,
+        signature,
+      });
+      
     };
 
     fetchTransactionData();
