@@ -77,7 +77,7 @@ const Box = styled.div`
     padding: 30px;
 `;
 
-// Función para formatear el precio en pesos colombianos
+// Función para formatear el precio en pesos colombianos COP
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-CO', {
         style: 'currency',
