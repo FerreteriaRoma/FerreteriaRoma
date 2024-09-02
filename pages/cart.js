@@ -164,6 +164,7 @@ export default function CartPage() {
     
                 Swal.fire({
                     title: 'Orden generada con éxito, puede realizar el pago',
+                    text: 'Cuando se realice el pago se le otorgara un numero de referencia',
                     icon: 'info',
                     html: `<div id="epayco-button-container"></div>`,
                     confirmButtonColor: 'white',

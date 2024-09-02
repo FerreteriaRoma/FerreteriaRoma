@@ -15,6 +15,7 @@ const StyleProductGrid = styled(motion.div)`
   display: flex;
   flex-direction: row;
   gap: 20px;
+  margin-top: 5px;
   white-space: nowrap; /* Evita que los productos se rompan en la línea */
 `;
 
@@ -22,7 +23,7 @@ const animation = {
   initial: { x: '0%' },
   animate: { x: '-50%' }, // Ajusta para que el desplazamiento se vea continuo
   transition: {
-    duration: 30, /* Ajusta la duración según la velocidad deseada */
+    duration: 40, /* Ajusta la duración según la velocidad deseada */
     repeat: Infinity,
     ease: 'linear'
   }
