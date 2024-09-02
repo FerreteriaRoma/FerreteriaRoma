@@ -2,7 +2,7 @@ import { mongooseConnect } from '@/lib/mongoose';
 import Order from '@/models/Order';
 import { Product } from '@/models/Product';
 import { v4 as uuidv4 } from 'uuid';
-// reseteo y ya
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
@@ -22,6 +22,7 @@ export default async function handler(req, res) {
         const productsInfos = await Product.find({ _id: { $in: uniqueIds } });
 
         let line_items = [];
+        let totalAmount = 0; // Inicializa el totalAmount
         for (const productId of uniqueIds) {
             const productInfo = productsInfos.find(p => p._id.toString() === productId);
             const quantity = productsIds.filter(id => id === productId).length || 0;
@@ -37,10 +38,12 @@ export default async function handler(req, res) {
                     },
                 };
                 line_items.push(item);
+                totalAmount += productInfo.price * quantity; // Acumula el totalAmount
             }
         }
 
         const generatedRefPayco = uuidv4();
+        const orderNumber = uuidv4(); // Genera un número de orden único
 
         const order = await Order.create({
             line_items,
@@ -51,6 +54,8 @@ export default async function handler(req, res) {
             StreetAddress: streetAddress,
             paid: false,
             ref_payco: generatedRefPayco,
+            total_amount: totalAmount, // Guarda el valor total
+            order_number: orderNumber, // Guarda el número de orden
         });
 
         res.status(200).json({ success: true, order });

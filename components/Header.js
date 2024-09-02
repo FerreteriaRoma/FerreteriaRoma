@@ -98,7 +98,7 @@ export default function Header() {
       <Center>
         <Wrapper>
           <Logo href={"/"}>
-            <Img src="/img/fondo.png" alt="Logo" />
+            <Img src="/img/LogoSinFondo.png" alt="Logo" />
           </Logo>
           <StyleNav mobileNavActive={mobileNavActive}>
             <NavLink href={"/"}>Principal</NavLink>
