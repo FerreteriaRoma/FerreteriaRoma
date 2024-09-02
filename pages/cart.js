@@ -316,7 +316,7 @@ export default function CartPage() {
                                         name="streetAddress"
                                         onChange={ev => setStreetAddress(ev.target.value)}
                                     />
-                                    <Button type="submit" block={1} primary>
+                                    <Button type="submit" block={1} $primary>
                                         {loading ? "Cargando..." : "Continuar con el pago"}
                                     </Button>
                                 </form>
