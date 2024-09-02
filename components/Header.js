@@ -5,7 +5,6 @@ import Center from "./Center";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./icons/Bars";
 
-// Estilos
 const StyleHeader = styled.header`
   background-color: #000;
   padding: 10px 0;
