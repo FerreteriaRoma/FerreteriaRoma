@@ -1,3 +1,4 @@
+// pages/response.js
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -11,19 +12,21 @@ const Response = () => {
     const fetchTransactionData = async () => {
       const queryParams = new URLSearchParams(window.location.search);
       const refPayco = queryParams.get('ref_payco');
+      const transactionId = queryParams.get('x_transaction_id');
+      const amount = queryParams.get('x_amount');
+      const currencyCode = queryParams.get('x_currency_code');
+      const signature = queryParams.get('x_signature');
 
-      if (refPayco) {
-        const url = `/api/confirmation`; // Asegúrate de que la URL es correcta
+      if (refPayco && transactionId && amount && currencyCode && signature) {
+        const url = `/api/confirmation`;
 
         const data = {
           x_ref_payco: refPayco,
-          x_transaction_id: queryParams.get('x_transaction_id'),
-          x_amount: queryParams.get('x_amount'),
-          x_currency_code: queryParams.get('x_currency_code'),
-          x_signature: queryParams.get('x_signature'),
+          x_transaction_id: transactionId,
+          x_amount: amount,
+          x_currency_code: currencyCode,
+          x_signature: signature,
         };
-
-        console.log('Datos enviados a la API:', data); // Verifica los datos enviados
 
         const response = await fetch(url, {
           method: 'POST',
@@ -44,13 +47,15 @@ const Response = () => {
             x_response: 'Aceptada',
             x_response_reason_text: 'Transacción exitosa',
             x_bank_name: 'Banco Ejemplo',
-            x_transaction_id: '1234567890',
-            x_amount: data.x_amount,
-            x_currency_code: data.x_currency_code,
+            x_transaction_id: transactionId,
+            x_amount: amount,
+            x_currency_code: currencyCode,
           });
         } else {
           setError(result.message);
         }
+      } else {
+        setError('Faltan parámetros necesarios.');
       }
     };
 
