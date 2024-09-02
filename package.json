@@ -12,6 +12,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.7.4",
+    "composer": "^4.1.0",
     "framer-motion": "^11.3.31",
     "lodash": "^4.17.21",
     "mongoose": "^8.5.2",
