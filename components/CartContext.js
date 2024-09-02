@@ -6,34 +6,39 @@ export function CartContextProvider({ children }) {
     const ls = typeof window !== "undefined" ? window.localStorage : null;
     const [cartProducts, setCartProducts] = useState([]);
 
+    // Guardar en localStorage cuando cartProducts cambie
     useEffect(() => {
-        if (cartProducts?.length > 0) {
+        if (cartProducts.length > 0) {
             ls?.setItem('cart', JSON.stringify(cartProducts));
         }
-    }, [cartProducts]);
+    }, [cartProducts, ls]);
 
+    // Leer desde localStorage al montar el componente
     useEffect(() => {
         if (ls && ls.getItem('cart')) {
             setCartProducts(JSON.parse(ls.getItem('cart')));
         }
-    }, []);
+    }, [ls]);
 
-    function addProduct(productId) {
+    const addProduct = (productId) => {
         setCartProducts((prev) => [...prev, productId]);
-    }
+    };
 
-    function removeProduct(productId) {
+    const removeProduct = (productId) => {
         setCartProducts(prev => {
             const pos = prev.indexOf(productId);
             if (pos !== -1) {
-                return prev.filter((value, index) => index !== pos);
+                return prev.filter((_, index) => index !== pos);
             }
             return prev;
-        })
-    }
+        });
+    };
 
     const clearCart = () => {
         setCartProducts([]);
+        if (ls) {
+            ls.removeItem('cart'); // Limpiar localStorage
+        }
     };
 
     return (

@@ -1,10 +1,11 @@
-import Link from "next/link";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import Center from "./Center";
-import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./icons/Bars";
 
+// Estilos
 const StyleHeader = styled.header`
   background-color: #000;
   padding: 10px 0;
@@ -89,9 +90,8 @@ const NavButton = styled.button`
   }
 `;
 
-export default function Header() {
+export default function Header({ mobileNavActive, onMobileNavToggle }) {
   const { cartProducts } = useContext(CartContext);
-  const [mobileNavActive, setMobileNavActive] = useState(false);
 
   return (
     <StyleHeader>
@@ -105,7 +105,7 @@ export default function Header() {
             <NavLink href={"/products"}>Todos los productos</NavLink>
             <NavLink href={"/cart"}>Carrito ({cartProducts.length})</NavLink>
           </StyleNav>
-          <NavButton onClick={() => setMobileNavActive((prev) => !prev)}>
+          <NavButton onClick={onMobileNavToggle}>
             <BarsIcon />
           </NavButton>
         </Wrapper>

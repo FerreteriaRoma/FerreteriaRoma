@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import ProductBox from "./ProductBox";
 
-// Estilo del contenedor que permite el desplazamiento horizontal
 const Container = styled.div`
   display: flex;
   overflow: hidden; /* Oculta los productos que se salen del contenedor */
@@ -29,9 +28,13 @@ const animation = {
   }
 };
 
-export default function ProductsGridAnimated({ products }) {
+export default function ProductsGridAnimated({ products, mobileNavActive }) {
   // Duplica los productos para un efecto continuo
   const duplicatedProducts = [...products, ...products];
+
+  if (mobileNavActive) {
+    return null; // No muestra nada si la navegación móvil está activa
+  }
 
   return (
     <Container>

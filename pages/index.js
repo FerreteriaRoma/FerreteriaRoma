@@ -1,20 +1,30 @@
+import { useState } from "react";
 import Featured from "@/components/Featured";
-import Header from "../components/Header";
+import Header from "@/components/Header";
 import { Product } from "@/models/Product";
 import { mongooseConnect } from "@/lib/mongoose";
 import NewProducts from "@/components/NewProducts";
 import Footer from "@/components/Footer";
 
 export default function HomePage({ featuredProduct, newProducts }) {
+  const [mobileNavActive, setMobileNavActive] = useState(false);
+
+  const handleMobileNavToggle = () => {
+    setMobileNavActive(prev => !prev);
+  };
+
   return (
     <div>
-      <Header />
+      <Header
+        mobileNavActive={mobileNavActive}
+        onMobileNavToggle={handleMobileNavToggle}
+      />
       {featuredProduct ? (
         <Featured product={featuredProduct} />
       ) : (
         <p>Producto no encontrado</p>
       )}
-      <NewProducts products={newProducts} />
+      <NewProducts products={newProducts} mobileNavActive={mobileNavActive} />
       <Footer />
     </div>
   );
