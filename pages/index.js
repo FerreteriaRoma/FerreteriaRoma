@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { Product } from "@/models/Product";
 import { mongooseConnect } from "@/lib/mongoose";
 import NewProducts from "@/components/NewProducts";
+import Footer from "@/components/Footer";
 
 export default function HomePage({ featuredProduct, newProducts }) {
   return (
@@ -14,27 +15,24 @@ export default function HomePage({ featuredProduct, newProducts }) {
         <p>Producto no encontrado</p>
       )}
       <NewProducts products={newProducts} />
+      <Footer />
     </div>
   );
 }
 
 export async function getServerSideProps() {
-  const featuredProductID = "66aac6f3303d954c3c6b9e09";
   await mongooseConnect();
 
   try {
-    const featuredProduct = await Product.findById(featuredProductID);
-    const newProducts = await Product.find({}, null, { sort: { "_id": -1 }, limit: 10 });
+    // Obtener todos los productos
+    const allProducts = await Product.find({});
+    
+    // Seleccionar un producto al azar
+    const randomIndex = Math.floor(Math.random() * allProducts.length);
+    const featuredProduct = allProducts[randomIndex];
 
-    if (!featuredProduct) {
-      // Manejo de caso en que no se encuentra el producto
-      return {
-        props: {
-          featuredProduct: null,
-          newProducts: JSON.parse(JSON.stringify(newProducts)),
-        },
-      };
-    }
+    // Obtener los productos más recientes
+    const newProducts = await Product.find({}, null, { sort: { "_id": -1 }, limit: 10 });
 
     return {
       props: {

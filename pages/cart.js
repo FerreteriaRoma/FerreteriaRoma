@@ -7,14 +7,27 @@ import Input from "@/components/Input";
 import Table from "@/components/Table";
 import axios from "axios";
 import styled from "styled-components";
-import Script from 'next/script';
 import Swal from "sweetalert2";
+import Footer from '@/components/Footer';
+
+const PageWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+    flex: 1;
+`;
 
 const ColumnsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.3fr .7fr;
+    grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 40px;
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1.3fr .7fr;
+    }
 `;
 
 const ProductInfoCell = styled.td`
@@ -22,21 +35,40 @@ const ProductInfoCell = styled.td`
 `;
 
 const ProductImageBox = styled.div`
-    width: 100px;
+    width: 70px;
     height: 100px;
-    padding: 10px;
+    padding: 2px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
+    align-items: center;
     justify-content: center;
     border-radius: 10px;
+
     img {
-        max-width: 80px;
-        max-height: 80px;
+        max-width: 60px;
+        max-height: 60px;
+    }
+
+    @media screen and (min-width: 768px) {
+        width: 100px;
+        height: 100px;
+        padding: 10px
+
+        img {
+            max-width: 80px;
+            max-height: 80px;
+        }
     }
 `;
 
 const QuantityLabel = styled.span`
-    padding: 0 3px;
+    padding: 0 15px;
+    display: block;
+
+    @media screen and (min-width: 768px) {
+        display: inline-block;
+        padding: 0 10px;
+    }
 `;
 
 const Box = styled.div`
@@ -44,6 +76,15 @@ const Box = styled.div`
     border-radius: 10px;
     padding: 30px;
 `;
+
+// Función para formatear el precio en pesos colombianos
+const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0
+    }).format(amount);
+};
 
 export default function CartPage() {
     const { cartProducts, addProduct, removeProduct, clearCart } = useContext(CartContext);
@@ -117,8 +158,9 @@ export default function CartPage() {
                 const productDescriptions = products.map(product => {
                     const quantity = cartProducts.filter(id => id === product._id).length;
                     const totalPrice = quantity * product.price;
-                    return `${product.title} x${quantity} - $${totalPrice}`;
+                    return `${product.title} x${quantity} - ${formatCurrency(totalPrice)}`;
                 }).join(',');
+                
     
                 Swal.fire({
                     title: 'Orden generada con éxito, puede realizar el pago',
@@ -132,6 +174,7 @@ export default function CartPage() {
                         script.setAttribute('data-epayco-key', process.env.NEXT_PUBLIC_EPAYCO_KEY);
                         script.setAttribute('data-epayco-private-key', process.env.NEXT_PUBLIC_PRIVATE_KEY);
                         script.setAttribute('class', 'epayco-button');
+                        script.setAttribute('data-epayco-outoclick', 'true');
                         script.setAttribute('data-epayco-amount', totalPay);
                         script.setAttribute('data-epayco-tax', '0.00');
                         script.setAttribute('data-epayco-tax-ico', '0.00');
@@ -143,16 +186,20 @@ export default function CartPage() {
                         script.setAttribute('data-epayco-test', 'true');
                         script.setAttribute('data-epayco-external', 'false');
                         script.setAttribute('data-epayco-ref-payco', result.ref_payco);
-                        script.setAttribute('data-epayco-response', 'https://e-commers-front.vercel.app/pay-response');
+                        script.setAttribute('data-epayco-response', 'http://localhost:3000');
                         script.setAttribute('data-epayco-confirmation', 'http://localhost:3000');
                         script.setAttribute('data-epayco-methodconfirmation', 'post');
-                        script.setAttribute('data-epayco-type-doc-building', 'CC');
-                        script.setAttribute('data-epayco-number-doc-building', '123456789');
+                        script.setAttribute('data-epayco-type-doc-billing', 'CC');
+                        script.setAttribute('data-epayco-number-doc-billing', '123456789');
+                        script.setAttribute('data-epayco-name-billing', name);
+                        script.setAttribute('data-epayco-address-billing', streetAddress);
+                        script.setAttribute('data-epayco-mobilephone-billing', phone);
+                        script.setAttribute('data-epayco-email-billing', email);
     
                         document.getElementById('epayco-button-container').appendChild(script);
                     }
                 });
-                
+    
             } else {
                 Swal.fire({
                     title: 'Algo salió mal',
@@ -172,130 +219,113 @@ export default function CartPage() {
         } finally {
             setLoading(false);
         }
+        setName('');
+        setEmail('');
+        setPhone('');
+        setCity('');
+        setStreetAddress('');
+        setTotalPay("0");
+        setProducts([]);
+        clearCart();
     }
-    
 
     return (
-        <>
+        <PageWrapper>
             <Header />
-            <Center>
-                <ColumnsWrapper>
-                    <Box>
-                        <h2>Cart</h2>
-                        {!cartProducts.length ? (
-                            <div>Tu carrito está vacio</div>
-                        ) : (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <th>Products</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {products.map((product) => (
-                                        <tr key={product._id}>
-                                            <ProductInfoCell>
-                                                <ProductImageBox>
-                                                    <img src={product.images[0]} alt={product.title} />
-                                                </ProductImageBox>
-                                                {product.title}
-                                            </ProductInfoCell>
-                                            <td>
-                                                <Button onClick={() => lessOfThisProduct(product._id)}>-</Button>
-                                                <QuantityLabel>{cartProducts.filter(id => id === product._id).length}</QuantityLabel>
-                                                <Button onClick={() => moreOfThisProduct(product._id)}>+</Button>
-                                            </td>
-                                            <td>${cartProducts.filter(id => id === product._id).length * product.price}</td>
-                                        </tr>
-                                    ))}
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td>${totalPay}</td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        )}
-                    </Box>
-                    {!!cartProducts.length && (
+            <ContentWrapper>
+                <Center>
+                    <ColumnsWrapper>
                         <Box>
-                            <h2>Informacion de la orden</h2>
-                            <form onSubmit={handleSubmit}>
-                                <Input
-                                    type="text"
-                                    placeholder="Nombre"
-                                    value={name}
-                                    name="name"
-                                    onChange={ev => setName(ev.target.value)}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Email"
-                                    value={email}
-                                    name="email"
-                                    onChange={ev => setEmail(ev.target.value)}
-                                />
-                                <Input 
-                                    type="text"
-                                    placeholder="Celular"
-                                    value={phone}
-                                    name="phone"
-                                    onChange={ev => setPhone(ev.target.value)}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Ciudad"
-                                    value={city}
-                                    name="city"
-                                    onChange={ev => setCity(ev.target.value)}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Direccion"
-                                    value={streetAddress}
-                                    name="streetAddress"
-                                    onChange={ev => setStreetAddress(ev.target.value)}
-                                />
-                                <input
-                                    type="hidden"
-                                    name="products"
-                                    value={cartProducts.join(',')}
-                                />
-                                <Button $black={1} $block={true} type="submit" disabled={loading}>
-                                    {loading ? 'Procesando...' : 'Dirigirse al pago'}
-                                </Button>
-                                {successMessage && <div>{successMessage}</div>}
-                                {errorMessage && <div>{errorMessage}</div>}
-                                {showPaymentButton && (
-                                    <Script
-                                        src={process.env.NEXT_PUBLIC_EPAYCO_CHECHOUT_URL}
-                                        data-epayco-key={process.env.NEXT_PUBLIC_EPAYCO_KEY}
-                                        data-epayco-private-key={process.env.NEXT_PUBLIC_PRIVATE_KEY}
-                                        className='epayco-button'
-                                        data-epayco-amount='20000'
-                                        data-epayco-tax='0.00'
-                                        data-epayco-tax-ico='0.00'
-                                        tax_base='20000'
-                                        data-epayco-name='Test'
-                                        data-epayco-description='LOL'
-                                        data-epayco-currency='COP'
-                                        data-epayco-country='CO'
-                                        data-epayco-test='true'
-                                        data-epayco-external='false'
-                                        data-epayco-response='http://localhost:3000/cart'
-                                        data-epayco-confirmation='http://localhost:3000/cart'
-                                        data-epayco-methodconfirmation='get'
-                                        data-epayco-type-doc-building='CC'
-                                        data-epayco-number-doc-building={123456789}
-                                    ></Script>
-                                )}
-                            </form>
+                            <h2>Carrito</h2>
+                            {!cartProducts.length ? (
+                                <div>Tu carrito está vacio</div>
+                            ) : (
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Productos</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {products.map((product) => (
+                                            <tr key={product._id}>
+                                                <ProductInfoCell>
+                                                    <ProductImageBox>
+                                                        <img src={product.images[0]} alt={product.title} />
+                                                    </ProductImageBox>
+                                                    {product.title}
+                                                </ProductInfoCell>
+                                                <td>
+                                                    <Button onClick={() => lessOfThisProduct(product._id)}>-</Button>
+                                                    <QuantityLabel>{cartProducts.filter(id => id === product._id).length}</QuantityLabel>
+                                                    <Button onClick={() => moreOfThisProduct(product._id)}>+</Button>
+                                                </td>
+                                                <td>{formatCurrency(product.price)}</td>
+                                            </tr>
+                                        ))}
+                                        <tr>
+                                            <td></td>
+                                            <td>Total:</td>
+                                            <td>{formatCurrency(cartProducts.reduce((total, productId) => {
+                                                const product = products.find(p => p._id === productId);
+                                                return product ? total + product.price : total;
+                                            }, 0))}</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            )}
                         </Box>
-                    )}
-                </ColumnsWrapper>
-            </Center>
-        </>
+                        {!!cartProducts.length && (
+                            <Box>
+                                <h2>Información de la orden</h2>
+                                <form onSubmit={handleSubmit}>
+                                    <Input
+                                        type="text"
+                                        placeholder="Nombre"
+                                        value={name}
+                                        name="name"
+                                        onChange={ev => setName(ev.target.value)}
+                                    />
+                                    <Input
+                                        type="text"
+                                        placeholder="Email"
+                                        value={email}
+                                        name="email"
+                                        onChange={ev => setEmail(ev.target.value)}
+                                    />
+                                    <Input
+                                        type="text"
+                                        placeholder="Teléfono"
+                                        value={phone}
+                                        name="phone"
+                                        onChange={ev => setPhone(ev.target.value)}
+                                    />
+                                    <Input
+                                        type="text"
+                                        placeholder="Ciudad"
+                                        value={city}
+                                        name="city"
+                                        onChange={ev => setCity(ev.target.value)}
+                                    />
+                                    <Input
+                                        type="text"
+                                        placeholder="Dirección"
+                                        value={streetAddress}
+                                        name="streetAddress"
+                                        onChange={ev => setStreetAddress(ev.target.value)}
+                                    />
+                                    <Button type="submit" block={1} primary>
+                                        {loading ? "Cargando..." : "Continuar con el pago"}
+                                    </Button>
+                                </form>
+                            </Box>
+                        )}
+                    </ColumnsWrapper>
+                </Center>
+            </ContentWrapper>
+            <Footer />
+        </PageWrapper>
     );
 }

@@ -15,20 +15,40 @@ const Bg = styled.div`
 const Title = styled.h1`
     margin: 0;
     font-weight: normal;
-    font-size: 3rem;
+    font-size: 1.5rem;
+
+    @media screen and (min-width: 768px) {
+        font-size: 3rem;
+    }
 `;
 
 const Desc = styled.p`
     color: #aaa;
-    font-size: .8rem
+    font-size: .8rem;
 `;
 
 const ColumnsWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: 1fr;
     gap: 40px;
+
     img {
         max-width: 100%;
+        max-height: 250px;
+        display: block;
+        margin: 0 auto;
+        object-fit: cover; /* Asegura que la imagen se ajuste adecuadamente */
+    }
+
+    div:nth-child(1) {
+        order: 2;
+    }
+    
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1.1fr 0.9fr;
+        div:nth-child(1) {
+            order: 0;
+        }
     }
 `;
 
@@ -43,11 +63,11 @@ const ButtonsWrapper = styled.div`
     gap: 10px;
 `;
 
-export default function Featured({product}) {
-    const {addProduct} = useContext(CartContext);
+export default function Featured({ product }) {
+    const { addProduct } = useContext(CartContext);
 
     function addFeaturedToCart() {
-        addProduct( product._id );
+        addProduct(product._id);
     }
 
     return (
@@ -59,16 +79,19 @@ export default function Featured({product}) {
                             <Title>{product.title}</Title>
                             <Desc>{product.description}</Desc>
                             <ButtonsWrapper>
-                                <ButtonLink href={'/products/' + product._id} outline={1} $gray={1} $size="l">Ver más</ButtonLink>
+                                <ButtonLink href={`/product/${product._id}`} outline={1} $gray={1} $size="l">
+                                    Ver más
+                                </ButtonLink>
                                 <Button $primary={1} $size="l" onClick={addFeaturedToCart}>
                                     <CartIcon />
-                                    Agregar al carro
+                                    Añadir al carrito
                                 </Button>
                             </ButtonsWrapper>
                         </div>
                     </Column>
                     <Column>
-                        <img src="https://dawid-next-ecommers.s3.amazonaws.com/1723237940008.png" alt="Imagen del producto" />
+                        {/* Usa la URL de imagen del producto */}
+                        <img src={product.images[0]} alt={`Imagen de ${product.title}`} />
                     </Column>
                 </ColumnsWrapper>
             </Center>

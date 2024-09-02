@@ -1,76 +1,115 @@
-import styled from "styled-components"
+import styled from "styled-components";
 import Button from "./Button";
-import CartIcon from "./icons/Cart";
 import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
+import { motion } from "framer-motion";
 
 const ProductWrapper = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 220px;
+  margin: auto;
+  height: 100%;
 `;
 
-const WhiteBox = styled(Link)`
-    background-color: #fff;
-    padding: 20px;
-    height: 120px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    img {
-        max-width: 100%;
-        max-height: 120px;
-    }
+const WhiteBox = styled(motion.div)`
+  background-color: #fff;
+  padding: 15px;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 120px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
 `;
 
-const Title = styled(Link)`
-    font-weight: normal;
-    font-size: .9rem;
-    color: inherit;
-    text-decoration: none;
-    margin: 0;
+const Title = styled.a`
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #333;
+  text-decoration: none;
+  margin: 0;
+  margin-top: 10px;
+  display: block; /* Asegura que el título se comporta como un bloque */
+  overflow: hidden; /* Oculta el texto que se desborda */
+  text-overflow: ellipsis; /* Muestra "..." si el texto se desborda */
+  white-space: nowrap; /* Impide que el texto se rompa en varias líneas */
 `;
 
 const ProductInfoBox = styled.div`
-    margin-top: 5px;
+  margin-top: 20px;
+  flex: 1;
 `;
 
 const PriceRow = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Agrega espacio debajo del botón */
+  gap: 10px;
 `;
 
 const Price = styled.div`
-    font-size: 1.3rem;
-    font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 500;
 `;
 
-export default function ProductBox({_id, title, description, price, images}) {
-    const { addProduct } = useContext(CartContext);
-    const url = '/product/' + _id;
+export default function ProductBox({ _id, title, price, images }) {
+  const { addProduct } = useContext(CartContext);
+  const url = '/product/' + _id;
 
-    return (
-        <ProductWrapper>
-            <WhiteBox href={url}>
-                <div>
-                    <img src={images[0]}></img>
-                </div>
-            </WhiteBox>
-            <ProductInfoBox>
-                <Title href={url}>
-                    {title}
-                </Title>
-                <PriceRow>
-                    <Price>
-                        ${price}
-                    </Price>
-                    <Button onClick = {() => addProduct(_id)} $primary $outline> Agregar al carro</Button>
-                </PriceRow>     
-            </ProductInfoBox>
-        </ProductWrapper>
-        
-    )
+  const formattedPrice = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+  }).format(price);
+
+  return (
+    <ProductWrapper>
+      <Link href={url} passHref>
+        <WhiteBox
+          whileHover={{ scale: 1.03 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div>
+            <img src={images[0]} alt={title} />
+          </div>
+        </WhiteBox>
+      </Link>
+      <ProductInfoBox>
+        <Title href={url}>
+          {title}
+        </Title>
+        <PriceRow>
+          <Price>
+            {formattedPrice}
+          </Price>
+          <Button block onClick={() => addProduct(_id)} $primary $outline>
+            Añadir al carrito
+          </Button>
+        </PriceRow>     
+      </ProductInfoBox>
+    </ProductWrapper>
+  );
 }
