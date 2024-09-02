@@ -13,7 +13,7 @@ const Response = () => {
       const refPayco = queryParams.get('ref_payco');
 
       if (refPayco) {
-        const url = `/api/confirmation`; // Utiliza la API de confirmación
+        const url = `/api/confirmation`; // Asegúrate de que la URL es correcta
 
         const data = {
           x_ref_payco: refPayco,
@@ -22,6 +22,8 @@ const Response = () => {
           x_currency_code: queryParams.get('x_currency_code'),
           x_signature: queryParams.get('x_signature'),
         };
+
+        console.log('Datos enviados a la API:', data); // Verifica los datos enviados
 
         const response = await fetch(url, {
           method: 'POST',
@@ -36,7 +38,6 @@ const Response = () => {
         setMessage(result.message);
 
         if (result.status === 'success') {
-          // Simulando datos de la transacción para el ejemplo
           setTransactionData({
             x_id_invoice: refPayco,
             x_transaction_date: new Date().toLocaleString(),
