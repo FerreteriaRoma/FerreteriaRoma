@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Featured from "@/components/Featured";
-import Header from "@/components/Header";
+import Header from "@/components/HeaderI";
 import { Product } from "@/models/Product";
 import { mongooseConnect } from "@/lib/mongoose";
 import NewProducts from "@/components/NewProducts";

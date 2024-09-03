@@ -72,7 +72,7 @@ export default function Footer() {
             <p>Sucursal: Calle Falsa 123, Ciudad, País</p>
           </ContactItem>
         </ContactInfo>
-        <CopyrightText>© 2024 TODOS LOS DERECHOS RESERVADOS</CopyrightText>
+        <CopyrightText>© TODOS LOS DERECHOS RESERVADOS</CopyrightText>
       </Center>
     </StyledFooter>
   );

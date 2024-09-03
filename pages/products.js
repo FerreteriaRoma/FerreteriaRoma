@@ -5,19 +5,33 @@ import ProductsGrid from "@/components/ProductsGrid";
 import Title from "@/components/Title";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
+import styled from "styled-components";
 
+const PageWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f7f7f7;
+`;
 
+const ContentWrapper = styled.div`
+    flex: 1;
+    padding: 20px;
+    display: ${({ mobileNavActive }) => (mobileNavActive ? "none" : "block")}; /* Oculta el contenido cuando mobileNav está activo */
+`;
 
-export default function ProductsPage({ products }) {
+export default function ProductsPage({ products, mobileNavActive, onMobileNavToggle }) {
     return (
-        <>
-            <Header />
-            <Center>
-                <Title>Todos los productos</Title>
-                <ProductsGrid products={products}/>
-            </Center>
+        <PageWrapper>
+            <Header mobileNavActive={mobileNavActive} onMobileNavToggle={onMobileNavToggle} />
+            <ContentWrapper mobileNavActive={mobileNavActive}>
+                <Center>
+                    <Title>Todos los productos</Title>
+                    <ProductsGrid products={products} />
+                </Center>
+            </ContentWrapper>
             <Footer />
-        </>
+        </PageWrapper>
     );
 }
 

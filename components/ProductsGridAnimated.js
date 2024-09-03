@@ -20,7 +20,7 @@ const StyleProductGrid = styled(motion.div)`
 
 const animation = {
   initial: { x: '0%' },
-  animate: { x: '-50%' }, // Ajusta para que el desplazamiento se vea continuo
+  animate: { x: '-60%' }, // Ajusta para que el desplazamiento se vea continuo
   transition: {
     duration: 40, /* Ajusta la duración según la velocidad deseada */
     repeat: Infinity,
