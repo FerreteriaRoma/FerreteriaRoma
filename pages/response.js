@@ -71,9 +71,9 @@ export default function Response() {
                         <Box>
                             <Heading>Gracias por su compra</Heading>
                             <Paragraph>
-                                No olvide! Envíe su comprobante de pago enviado al correo electrónico registrado 
-                                a nuestro WhatsApp +57 123 456 789. Medio por el cual se le notificará el estado 
-                                de su pedido.
+                                Envíe a nuestro WhatsApp +57 123 456 789 el comprobante de pago que fue 
+                                enviado al correo electrónico registrado
+                                en el formulario, por ese medio se le notificara el estado de su producto.
                             </Paragraph>
                             <Heading>Deberá verse de la siguiente manera</Heading>
                             <InvoiceImage src="/img/EjFactura.png" alt="Ejemplo de Factura" />
