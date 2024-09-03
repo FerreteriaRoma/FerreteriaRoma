@@ -17,7 +17,20 @@ const PageWrapper = styled.div`
 const ContentWrapper = styled.div`
     flex: 1;
     padding: 20px;
-    display: ${({ mobileNavActive }) => (mobileNavActive ? "none" : "block")}; /* Oculta el contenido cuando mobileNav está activo */
+    display: ${({ mobileNavActive }) => (mobileNavActive ? "none" : "block")};
+
+    @media (max-width: 768px) {
+        padding: 10px; /* Reduce el padding en pantallas más pequeñas */
+    }
+`;
+
+const TitleStyled = styled(Title)`
+    text-align: left;
+    font-size: 1.7rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.5rem; /* Ajusta el tamaño de la fuente en pantallas pequeñas */
+    }
 `;
 
 export default function ProductsPage({ products, mobileNavActive, onMobileNavToggle }) {
@@ -26,7 +39,7 @@ export default function ProductsPage({ products, mobileNavActive, onMobileNavTog
             <Header mobileNavActive={mobileNavActive} onMobileNavToggle={onMobileNavToggle} />
             <ContentWrapper mobileNavActive={mobileNavActive}>
                 <Center>
-                    <Title>Todos los productos</Title>
+                    <TitleStyled>Todos los productos</TitleStyled>
                     <ProductsGrid products={products} />
                 </Center>
             </ContentWrapper>

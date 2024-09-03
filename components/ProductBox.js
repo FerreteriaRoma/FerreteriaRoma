@@ -12,6 +12,11 @@ const ProductWrapper = styled.div`
   max-width: 220px;
   margin: auto;
   height: 100%;
+
+  @media screen and (max-width: 510px) {
+    max-width: 150px; 
+    
+  }
 `;
 
 const WhiteBox = styled(motion.div)`
@@ -62,7 +67,10 @@ const ProductInfoBox = styled.div`
 `;
 
 const PriceRow = styled.div`
-  display: flex;
+  display: block;
+  @media screen and (min-width: 786px) {
+    display: block;
+  }
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
@@ -73,6 +81,12 @@ const PriceRow = styled.div`
 const Price = styled.div`
   font-size: 0.9rem;
   font-weight: 500;
+  text-align: right;
+  @media screen and (min-width: 786px) {
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: right;
+  }
 `;
 
 export default function ProductBox({ _id, title, price, images }) {
