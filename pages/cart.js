@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Center from "@/components/Center";
-import Header from "@/components/Header";
+import Header from "@/components/HeaderI";
 import Input from "@/components/Input";
 import Table from "@/components/Table";
 import axios from "axios";
@@ -52,7 +52,7 @@ const ProductImageBox = styled.div`
     @media screen and (min-width: 768px) {
         width: 100px;
         height: 100px;
-        padding: 10px
+        padding: 10px;
 
         img {
             max-width: 80px;
@@ -77,7 +77,6 @@ const Box = styled.div`
     padding: 30px;
 `;
 
-// Función para formatear el precio en pesos colombianos COP
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-CO', {
         style: 'currency',
@@ -95,10 +94,12 @@ export default function CartPage() {
     const [city, setCity] = useState('');
     const [streetAddress, setStreetAddress] = useState('');
     const [totalPay, setTotalPay] = useState("0");
-    const [loading, setLoading] = useState(false); // Estado para manejar el cargando
-    const [successMessage, setSuccessMessage] = useState(''); // Estado para mensaje de éxito
-    const [errorMessage, setErrorMessage] = useState(''); // Estado para mensaje de error
-    const [showPaymentButton, setShowPaymentButton] = useState(false); // Estado para mostrar el botón de pagos
+    const [loading, setLoading] = useState(false);
+    const [mobileNavActive, setMobileNavActive] = useState(false); 
+
+    const handleMobileNavToggle = () => {
+        setMobileNavActive((prev) => !prev);
+    };
 
     useEffect(() => {
         if (cartProducts.length > 0) {
@@ -152,30 +153,25 @@ export default function CartPage() {
             });
     
             const result = await response.json();
-            console.log('Resultado de la respuesta:', result);
-    
             if (response.ok) {
                 const productDescriptions = products.map(product => {
                     const quantity = cartProducts.filter(id => id === product._id).length;
                     const totalPrice = quantity * product.price;
                     return `${product.title} x${quantity} - ${formatCurrency(totalPrice)}`;
                 }).join(',');
-                
-    
+
                 Swal.fire({
                     title: 'Orden generada con éxito, puede realizar el pago',
                     text: 'Cuando se realice el pago se le otorgara un numero de referencia',
                     icon: 'info',
                     html: `<div id="epayco-button-container"></div>`,
                     confirmButtonColor: 'white',
-                    confirmButtonText: '',
                     didOpen: () => {
                         const script = document.createElement('script');
                         script.src = process.env.NEXT_PUBLIC_EPAYCO_CHECHOUT_URL;
                         script.setAttribute('data-epayco-key', process.env.NEXT_PUBLIC_EPAYCO_KEY);
                         script.setAttribute('data-epayco-private-key', process.env.NEXT_PUBLIC_PRIVATE_KEY);
                         script.setAttribute('class', 'epayco-button');
-                        script.setAttribute('data-epayco-outoclick', 'true');
                         script.setAttribute('data-epayco-amount', totalPay);
                         script.setAttribute('data-epayco-tax', '0.00');
                         script.setAttribute('data-epayco-tax-ico', '0.00');
@@ -196,11 +192,10 @@ export default function CartPage() {
                         script.setAttribute('data-epayco-address-billing', streetAddress);
                         script.setAttribute('data-epayco-mobilephone-billing', phone);
                         script.setAttribute('data-epayco-email-billing', email);
-    
+
                         document.getElementById('epayco-button-container').appendChild(script);
                     }
                 });
-    
             } else {
                 Swal.fire({
                     title: 'Algo salió mal',
@@ -219,114 +214,119 @@ export default function CartPage() {
             });
         } finally {
             setLoading(false);
+            setName('');
+            setEmail('');
+            setPhone('');
+            setCity('');
+            setStreetAddress('');
+            setTotalPay("0");
+            setProducts([]);
+            clearCart();
         }
-        setName('');
-        setEmail('');
-        setPhone('');
-        setCity('');
-        setStreetAddress('');
-        setTotalPay("0");
-        setProducts([]);
-        clearCart();
     }
 
     return (
         <PageWrapper>
-            <Header />
-            <ContentWrapper>
-                <Center>
-                    <ColumnsWrapper>
-                        <Box>
-                            <h2>Carrito</h2>
-                            {!cartProducts.length ? (
-                                <div>Tu carrito está vacio</div>
-                            ) : (
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Productos</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {products.map((product) => (
-                                            <tr key={product._id}>
-                                                <ProductInfoCell>
-                                                    <ProductImageBox>
-                                                        <img src={product.images[0]} alt={product.title} />
-                                                    </ProductImageBox>
-                                                    {product.title}
-                                                </ProductInfoCell>
-                                                <td>
-                                                    <Button onClick={() => lessOfThisProduct(product._id)}>-</Button>
-                                                    <QuantityLabel>{cartProducts.filter(id => id === product._id).length}</QuantityLabel>
-                                                    <Button onClick={() => moreOfThisProduct(product._id)}>+</Button>
-                                                </td>
-                                                <td>{formatCurrency(product.price)}</td>
-                                            </tr>
-                                        ))}
-                                        <tr>
-                                            <td></td>
-                                            <td>Total:</td>
-                                            <td>{formatCurrency(cartProducts.reduce((total, productId) => {
-                                                const product = products.find(p => p._id === productId);
-                                                return product ? total + product.price : total;
-                                            }, 0))}</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            )}
-                        </Box>
-                        {!!cartProducts.length && (
+            <Header
+                mobileNavActive={mobileNavActive}
+                onMobileNavToggle={handleMobileNavToggle}
+            />
+            {mobileNavActive ? null : (
+                <ContentWrapper>
+                    <Center>
+                        <ColumnsWrapper>
                             <Box>
-                                <h2>Información de la orden</h2>
-                                <form onSubmit={handleSubmit}>
-                                    <Input
-                                        type="text"
-                                        placeholder="Nombre"
-                                        value={name}
-                                        name="name"
-                                        onChange={ev => setName(ev.target.value)}
-                                    />
-                                    <Input
-                                        type="text"
-                                        placeholder="Email"
-                                        value={email}
-                                        name="email"
-                                        onChange={ev => setEmail(ev.target.value)}
-                                    />
-                                    <Input
-                                        type="text"
-                                        placeholder="Teléfono"
-                                        value={phone}
-                                        name="phone"
-                                        onChange={ev => setPhone(ev.target.value)}
-                                    />
-                                    <Input
-                                        type="text"
-                                        placeholder="Ciudad"
-                                        value={city}
-                                        name="city"
-                                        onChange={ev => setCity(ev.target.value)}
-                                    />
-                                    <Input
-                                        type="text"
-                                        placeholder="Dirección"
-                                        value={streetAddress}
-                                        name="streetAddress"
-                                        onChange={ev => setStreetAddress(ev.target.value)}
-                                    />
-                                    <Button type="submit" block $primary>
-                                        {loading ? "Cargando..." : "Continuar con el pago"}
-                                    </Button>
-                                </form>
+                                <h2>Carrito</h2>
+                                {!cartProducts.length ? (
+                                    <div>Tu carrito está vacío</div>
+                                ) : (
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Productos</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {products.map((product) => (
+                                                <tr key={product._id}>
+                                                    <ProductInfoCell>
+                                                        <ProductImageBox>
+                                                            <img src={product.images[0]} alt={product.title} />
+                                                        </ProductImageBox>
+                                                        {product.title}
+                                                    </ProductInfoCell>
+                                                    <td>
+                                                        <Button $gray onClick={() => lessOfThisProduct(product._id)}>-</Button>
+                                                        <QuantityLabel>{cartProducts.filter(id => id === product._id).length}</QuantityLabel>
+                                                        <Button $gray onClick={() => moreOfThisProduct(product._id)}>+</Button>
+                                                    </td>
+                                                    <td>{formatCurrency(product.price)}</td>
+                                                </tr>
+                                            ))}
+                                            <tr>
+                                                <td></td>
+                                                <td>Total:</td>
+                                                <td>{formatCurrency(cartProducts.reduce((total, productId) => {
+                                                    const product = products.find(p => p._id === productId);
+                                                    return product ? total + product.price : total;
+                                                }, 0))}</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                )}
                             </Box>
-                        )}
-                    </ColumnsWrapper>
-                </Center>
-            </ContentWrapper>
+                            {!!cartProducts.length && (
+                                <Box>
+                                    <h2>Información de la orden</h2>
+                                    <form onSubmit={handleSubmit}>
+                                        <Input
+                                            type="text"
+                                            placeholder="Nombre"
+                                            value={name}
+                                            name="name"
+                                            onChange={ev => setName(ev.target.value)}
+                                        />
+                                        <Input
+                                            type="text"
+                                            placeholder="Email"
+                                            value={email}
+                                            name="email"
+                                            onChange={ev => setEmail(ev.target.value)}
+                                        />
+                                        <Input
+                                            type="text"
+                                            placeholder="Teléfono"
+                                            value={phone}
+                                            name="phone"
+                                            onChange={ev => setPhone(ev.target.value)}
+                                        />
+                                        <Input
+                                            type="text"
+                                            placeholder="Ciudad"
+                                            value={city}
+                                            name="city"
+                                            onChange={ev => setCity(ev.target.value)}
+                                        />
+                                        <Input
+                                            type="text"
+                                            placeholder="Dirección"
+                                            value={streetAddress}
+                                            name="streetAddress"
+                                            onChange={ev => setStreetAddress(ev.target.value)}
+                                        />
+                                        <Button type="submit" block $primary>
+                                            {loading ? "Cargando..." : "Continuar con el pago"}
+                                        </Button>
+                                    </form>
+                                </Box>
+                            )}
+                        </ColumnsWrapper>
+                    </Center>
+                </ContentWrapper>
+            )}
             <Footer />
         </PageWrapper>
-    );
+    );    
 }

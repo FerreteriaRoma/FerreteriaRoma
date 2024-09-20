@@ -2,14 +2,14 @@ import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Center from "@/components/Center";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Header from "@/components/HeaderI";
 import CartIcon from "@/components/icons/Cart";
 import ProductImages from "@/components/ProductImages";
 import Title from "@/components/Title";
 import WhiteBox from "@/components/WhiteBox";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -73,51 +73,52 @@ const buttonVariants = {
 
 export default function ProductPage({ product }) {
     const { addProduct } = useContext(CartContext);
+    const [mobileNavActive, setMobileNavActive] = useState(false); // Estado para manejar mobileNavActive
 
     return (
         <MainContainer>
-            <Header />
-            <Content>
-                <Center>
-                    <ColWrapper>
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <WhiteBox>
-                                <ProductImages images={product.images} />
-                            </WhiteBox>
-                        </motion.div>
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <Title>{product.title}</Title>
-                            <p>{product.description}</p>
-                            <PriceRow>
-                                <div>
-                                    <Price>
-                                        {formatCurrency(product.price)}
-                                    </Price>
-                                </div>
-                                <div>
-                                    <motion.div
-                                        variants={buttonVariants}
-                                        whileHover="hover"
-                                        whileTap="tap"
-                                    >
-                                        <Button $primary onClick={() => addProduct(product._id)}>
-                                            <CartIcon /> Añadir al carrito
-                                        </Button>
-                                    </motion.div>
-                                </div>
-                            </PriceRow>
-                        </motion.div>
-                    </ColWrapper>
-                </Center>
-            </Content>
+            <Header mobileNavActive={mobileNavActive} onMobileNavToggle={() => setMobileNavActive(!mobileNavActive)} />
+            {!mobileNavActive && ( // Solo renderizar el contenido si mobileNavActive es false
+                <Content>
+                    <Center>
+                        <ColWrapper>
+                            <motion.div
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                <WhiteBox>
+                                    <ProductImages images={product.images} />
+                                </WhiteBox>
+                            </motion.div>
+                            <motion.div
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                <Title>{product.title}</Title>
+                                <p>{product.description}</p>
+                                <PriceRow>
+                                    <div>
+                                        <Price>{formatCurrency(product.price)}</Price>
+                                    </div>
+                                    <div>
+                                        <motion.div
+                                            variants={buttonVariants}
+                                            whileHover="hover"
+                                            whileTap="tap"
+                                        >
+                                            <Button $primary onClick={() => addProduct(product._id)}>
+                                                <CartIcon /> Añadir al carrito
+                                            </Button>
+                                        </motion.div>
+                                    </div>
+                                </PriceRow>
+                            </motion.div>
+                        </ColWrapper>
+                    </Center>
+                </Content>
+            )}
             <Footer />
         </MainContainer>
     );

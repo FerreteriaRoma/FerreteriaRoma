@@ -1,28 +1,14 @@
 import styled from "styled-components";
 import Button from "./Button";
 import Link from "next/link";
-import { useContext } from "react";
-import { CartContext } from "./CartContext";
 import { motion } from "framer-motion";
-
-const ProductWrapper = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 220px;
-  margin: auto;
-  height: 100%;
-
-  @media screen and (max-width: 510px) {
-    max-width: 150px; 
-  }
-`;
 
 const WhiteBox = styled(motion.div)`
   background-color: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   padding: 20px;
-  height: 100%;
+  width: 200px;
+  height: 200px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -35,6 +21,21 @@ const WhiteBox = styled(motion.div)`
   position: relative;
   overflow: hidden;
   border: 2px solid transparent;
+
+  @media screen and (max-width: 897px) {
+    height: 180px;
+    max-width: 200px;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 180px;
+    max-width: 200px;
+  }
+
+  @media screen and (max-width: 510px) {
+    height: 150px;
+    max-width: 130px;
+  }
 
   &:hover {
     background-color: #fafafa;
@@ -56,9 +57,17 @@ const WhiteBox = styled(motion.div)`
 
   img {
     max-width: 100%;
-    max-height: 130px;
+    max-height: 150px;
     border-radius: 12px;
     transition: transform 0.3s ease;
+
+    @media screen and (max-width: 768px) {
+      max-height: 120px; // Ajustar para pantallas más pequeñas
+    }
+
+    @media screen and (max-width: 510px) {
+      max-height: 100px;
+    }
   }
 
   &:hover img {
@@ -66,11 +75,33 @@ const WhiteBox = styled(motion.div)`
   }
 `;
 
+const ProductWrapper = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 260px;
+  margin: auto;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s forwards ease-in-out 0.1s;
+
+  @media screen and (max-width: 510px) {
+    max-width: 150px;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
 
 const Title = styled.a`
-  font-weight: normal;
-  font-size: 0.9rem;
-  color: #333;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #222;
   text-decoration: none;
   margin: 0;
   margin-top: 30px;
@@ -78,15 +109,24 @@ const Title = styled.a`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color 0.3s ease, transform 0.3s ease;
+
+  @media screen and (max-width: 510px) {
+    margin-top: 5px;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-top: 5px;
+  }
 `;
 
 const ProductInfoBox = styled.div`
-  margin-top: 20px;
+  margin-top: 15px;
   flex: 1;
 `;
 
 const PriceRow = styled.div`
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
@@ -94,32 +134,15 @@ const PriceRow = styled.div`
   gap: 10px;
 `;
 
-const Price = styled.div`
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: right;
-
-  @media screen and (min-width: 786px) {
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: right;
-  }
+const Entrance = styled.a`
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #444;
+  text-decoration: none;
 `;
 
-export default function ProductBox({ _id, title, price, images, mobileNavActive }) {
-  const { addProduct } = useContext(CartContext);
-  const url = '/product/' + _id;
-
-  const formattedPrice = new Intl.NumberFormat('es-CO', {
-    style: 'currency',
-    currency: 'COP',
-    minimumFractionDigits: 0
-  }).format(price);
-
-  // Retornar null si mobileNavActive es true
-  if (mobileNavActive) {
-    return null;
-  }
+export default function NewsBox({ _id, title, entrance, images }) {
+  const url = '/news/' + _id;
 
   return (
     <ProductWrapper
@@ -128,7 +151,7 @@ export default function ProductBox({ _id, title, price, images, mobileNavActive 
     >
       <Link href={url} passHref>
         <WhiteBox
-          whileHover={{ scale: 1.03 }}
+          whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
         >
           <div>
@@ -137,21 +160,17 @@ export default function ProductBox({ _id, title, price, images, mobileNavActive 
         </WhiteBox>
       </Link>
       <ProductInfoBox>
-        <Title href={url}>{title}</Title>
+        <Title href={url}>
+          {title}
+        </Title>
+        <Entrance href={url}>
+          {entrance}
+        </Entrance>
         <PriceRow>
-          <Price>{formattedPrice}</Price>
-          <Button 
-            block 
-            onClick={() => addProduct(_id)} 
-            $primary 
-            $outline
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-          >
-            Añadir al carrito
+        <Button block $primary $outline onClick={() => window.location.href = url}>
+            Ver más
           </Button>
-        </PriceRow>     
+        </PriceRow>
       </ProductInfoBox>
     </ProductWrapper>
   );

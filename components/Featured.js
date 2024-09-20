@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { CartContext } from "./CartContext";
 
 const Bg = styled.div`
+    margin-top: 20px;
     background: #333132;
     color: #fff;
     padding: 50px 0;

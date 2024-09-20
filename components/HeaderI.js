@@ -103,6 +103,7 @@ export default function Header({ mobileNavActive, onMobileNavToggle }) {
           <StyleNav mobileNavActive={mobileNavActive}>
             <NavLink href={"/"}>Principal</NavLink>
             <NavLink href={"/products"}>Todos los productos</NavLink>
+            <NavLink href={"/news"}>Todas las noticias</NavLink>
             <NavLink href={"/cart"}>Carrito ({cartProducts.length})</NavLink>
           </StyleNav>
           <NavButton onClick={onMobileNavToggle}>
