@@ -14,7 +14,6 @@ const Title = styled.a`
   color: #222;
   text-decoration: none;
   margin: 30px 0 20px;
-  margin-top: 15px;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -36,81 +35,92 @@ const Title = styled.a`
       background-position: 0%;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.5rem; // Ajustar tamaño en móviles
+  }
 `;
 
 const MainContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: #f9f9f9; // Fondo gris claro para dar contraste
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f9f9f9; 
 `;
 
 const Content = styled.main`
-    flex: 1;
-    padding: 20px; // Espacio alrededor del contenido
-    background: #fff; // Fondo blanco para el contenido
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Sombra sutil para resaltar el contenido
-    border-radius: 8px; // Bordes redondeados
+  flex: 1;
+  padding: 20px; 
+  background: #fff; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; 
+
+  @media screen and (max-width: 768px) {
+    padding: 10px; // Menos espacio en móviles
+  }
 `;
 
 const ColWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    @media screen and (min-width: 768px) {
-        grid-template-columns: 0.8fr 1.2fr;
-    }
+  display: grid;
+  grid-template-columns: 1fr; // Columna única por defecto
+  gap: 20px; // Espaciado más pequeño en móviles
+  margin: 20px 0;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 0.8fr 1.2fr; // Dos columnas en pantallas más grandes
     gap: 40px;
     margin: 40px 0;
+  }
 `;
 
 const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 };
 
 export default function NewPage({ news }) {
-    const [mobileNavActive, setMobileNavActive] = useState(false); // Estado para manejar mobileNavActive
-    
-    return (
-        <MainContainer>
-            <Header mobileNavActive={mobileNavActive} onMobileNavToggle={() => setMobileNavActive(!mobileNavActive)} />
-            {!mobileNavActive && (
-                <Content>
-                    <Center>
-                        <ColWrapper>
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                          <ImageCarousel images={news.images} />
-                        </motion.div>
-                            <motion.div
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
-                                <Title>{news.title}</Title>
-                                <p>{news.description}</p>
-                            </motion.div>
-                        </ColWrapper>
-                    </Center>
-                </Content>
-            )}
-            <Footer />
-        </MainContainer>
-    )
+  const [mobileNavActive, setMobileNavActive] = useState(false); 
+  
+  return (
+    <MainContainer>
+      <Header mobileNavActive={mobileNavActive} onMobileNavToggle={() => setMobileNavActive(!mobileNavActive)} />
+      {!mobileNavActive && (
+        <Content>
+          <Center>
+            <ColWrapper>
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <ImageCarousel images={news.images} />
+              </motion.div>
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <Title>{news.title}</Title>
+                <p>{news.description}</p>
+              </motion.div>
+            </ColWrapper>
+          </Center>
+        </Content>
+      )}
+      <Footer />
+    </MainContainer>
+  )
 }
 
 export async function getServerSideProps(context) {
-    await mongooseConnect();
+  await mongooseConnect();
 
-    const { id } = context.query;
-    const product = await News.findById(id);
+  const { id } = context.query;
+  const product = await News.findById(id);
 
-    return {
-        props: {
-            news: JSON.parse(JSON.stringify(product)),
-        }
-    };
+  return {
+    props: {
+      news: JSON.parse(JSON.stringify(product)),
+    }
+  };
 }
