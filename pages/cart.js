@@ -9,6 +9,7 @@ import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import Footer from '@/components/Footer';
+import Select from "@/components/Select";
 
 const PageWrapper = styled.div`
     display: flex;
@@ -77,6 +78,11 @@ const Box = styled.div`
     padding: 30px;
 `;
 
+const FlexRow = styled.div`
+    display: flex;
+    gap: 5px; 
+`;
+
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-CO', {
         style: 'currency',
@@ -93,9 +99,12 @@ export default function CartPage() {
     const [phone, setPhone] = useState('');
     const [city, setCity] = useState('');
     const [streetAddress, setStreetAddress] = useState('');
+    const [selectedDocumentType, setSelectedDocumentType] = useState('');
+    const [selectedRegimen, setSelectedRegimen] = useState('');
+    const [documentNumber, setDocumentNumber] = useState('');
     const [totalPay, setTotalPay] = useState("0");
     const [loading, setLoading] = useState(false);
-    const [mobileNavActive, setMobileNavActive] = useState(false); 
+    const [mobileNavActive, setMobileNavActive] = useState(false);
 
     const handleMobileNavToggle = () => {
         setMobileNavActive((prev) => !prev);
@@ -144,6 +153,9 @@ export default function CartPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name,
+                    selectedDocumentType,
+                    documentNumber,
+                    selectedRegimen,
                     email,
                     phone,
                     city,
@@ -283,11 +295,47 @@ export default function CartPage() {
                                     <form onSubmit={handleSubmit}>
                                         <Input
                                             type="text"
-                                            placeholder="Nombre"
+                                            placeholder="Nombre o razon social"
                                             value={name}
                                             name="name"
                                             onChange={ev => setName(ev.target.value)}
                                         />
+                                        <FlexRow>
+                                            <Select
+                                                id="document-type"
+                                                value={selectedDocumentType}
+                                                name="selectedDocumentType"
+                                                onChange={ev => setSelectedDocumentType(ev.target.value)}
+                                                required
+                                            >
+                                                <option value="" disabled>
+                                                    CC/NIT
+                                                </option>
+                                                <option value="CC">CC</option>
+                                                <option value="NIT">NIT</option>
+                                            </Select>
+                                            <Input
+                                                type="text"
+                                                placeholder="Número de Documento"
+                                                value={documentNumber}
+                                                name="documentNumber"
+                                                onChange={ev => setDocumentNumber(ev.target.value)}
+                                                required
+                                            />
+                                        </FlexRow>
+                                        <Select
+                                          id="regimen-contributivo"
+                                          value={selectedRegimen}
+                                          name="selectedRegimen"
+                                          onChange={ev => setSelectedRegimen(ev.target.value)}
+                                          required
+                                        >
+                                          <option value="" disabled>
+                                            Regimen Contributivo
+                                          </option>
+                                          <option value="Natural">Natural</option>
+                                          <option value="Juridico">Juridico</option>
+                                        </Select>
                                         <Input
                                             type="text"
                                             placeholder="Email"
