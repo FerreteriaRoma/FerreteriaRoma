@@ -1,15 +1,20 @@
-import React, { useContext } from "react"; // Asegúrate de incluir useContext
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Center from "./Center";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./icons/Bars";
+import useScrollDirection from "./useScrollDirection"; // Importamos el hook personalizado
 
 // Estilos
 const StyleHeader = styled.header`
   background-color: #000;
   padding: 10px 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: ${({ hideHeader }) => (hideHeader ? "-100px" : "0")};
+  transition: top 0.3s ease-in-out;
+  z-index: 100;
 `;
 
 const Logo = styled(Link)`
@@ -92,9 +97,10 @@ const NavButton = styled.button`
 
 export default function Header({ mobileNavActive, onMobileNavToggle }) {
   const { cartProducts } = useContext(CartContext);
+  const scrollDirection = useScrollDirection(); // Usamos el hook para detectar el desplazamiento
 
   return (
-    <StyleHeader>
+    <StyleHeader hideHeader={scrollDirection === "down"}>
       <Center>
         <Wrapper>
           <Logo href={"/"}>

@@ -7,6 +7,7 @@ import NewProducts from "@/components/NewProducts";
 import Footer from "@/components/Footer";
 import NewNews from "@/components/NewNews";
 import { News } from "@/models/News";
+import YoutubeChanel from "@/components/Youtube";
 
 export default function HomePage({ featuredProduct, newProducts, newNews }) {
   const [mobileNavActive, setMobileNavActive] = useState(false);
@@ -29,6 +30,9 @@ export default function HomePage({ featuredProduct, newProducts, newNews }) {
           {/* Noticias recientes */}
           <NewNews news={newNews} />
           
+          {/* Canal de Youtube */}
+          <YoutubeChanel />
+
           {/* Producto destacado */}
           {featuredProduct ? (
             <Featured product={featuredProduct} />
