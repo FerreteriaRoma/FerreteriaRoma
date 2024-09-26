@@ -1,31 +1,23 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ProductsGrid from "@/components/ProductsGrid";
+import CategoryFilter from "@/components/CategoryFilter";
 import Header from "@/components/HeaderI";
 import Footer from "@/components/Footer";
-import ProductsGrid from "@/components/ProductsGrid";
-import Title from "@/components/Title";
-import { mongooseConnect } from "@/lib/mongoose";
-import { Product } from "@/models/Product";
+import styled from "styled-components";
 
-// Estilos para el contenedor de la página
-const PageWrapper = styled.div`
+const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #f7f7f7;
+  min-height: 100vh; /* Asegura que ocupe al menos toda la altura de la ventana */
 `;
 
-// Contenido principal que será ocultado cuando el mobileNavActive esté activo
-const ContentWrapper = styled.div`
-  flex: 1;
-  padding: 20px;
-
-  @media (max-width: 768px) {
-    padding: 10px; /* Reduce el padding en pantallas más pequeñas */
-  }
+const Content = styled.div`
+  flex: 1; /* Permite que este contenedor ocupe el espacio restante */
+  padding: 20px; /* Ajusta el padding como necesites */
 `;
 
-const TitleStyled = styled(Title)`
+const TitleStyled = styled.a`
   text-align: center;
   font-size: 1.7rem;
   font-weight: 700;
@@ -61,42 +53,47 @@ const TitleStyled = styled(Title)`
   }
 `;
 
-export default function ProductsPage({ products }) {
-  const [mobileNavActive, setMobileNavActive] = useState(false); 
+export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleMobileNavToggle = () => {
-    setMobileNavActive((prev) => !prev);
+  useEffect(() => {
+    fetchProducts(); // Llamar a la API de productos al cargar el componente
+  }, []);
+
+  const fetchProducts = async (category = '') => {
+    setLoading(true);
+    try {
+      let url = "/api/products";
+      if (category) {
+        url += `?category=${category}`; // Filtra por categoría si se proporciona
+      }
+      const response = await axios.get(url);
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error); // Manejo de errores
+    } finally {
+      setLoading(false); // Asegúrate de que se establezca loading a false
+    }
+  };
+
+  const handleCategoryChange = (category) => {
+    fetchProducts(category); // Llama a la API con la categoría seleccionada
   };
 
   return (
-    <PageWrapper>
-      <Header
-        mobileNavActive={mobileNavActive}
-        onMobileNavToggle={handleMobileNavToggle}
-      />
-      
-      {/* Solo mostrar contenido cuando mobileNavActive no esté activo */}
-      {!mobileNavActive && (
-        <>
-          <ContentWrapper>
-            <TitleStyled>Todos los productos</TitleStyled>
-            <ProductsGrid products={products} mobileNavActive={mobileNavActive} />
-          </ContentWrapper>
-          <Footer />
-        </>
-      )}
-    </PageWrapper>
+    <PageContainer>
+      <Header />
+      <Content>
+        <TitleStyled>Todos los productos</TitleStyled>
+        <CategoryFilter onCategoryChange={handleCategoryChange} /> {/* Filtro de categoría arriba de ProductsGrid */}
+        {loading ? (
+          <p>Cargando productos...</p>
+        ) : (
+          <ProductsGrid products={products} />
+        )}
+      </Content>
+      <Footer />
+    </PageContainer>
   );
-}
-
-export async function getServerSideProps() {
-  await mongooseConnect();
-
-  const products = await Product.find().sort({ "_id": -1 });
-
-  return {
-    props: {
-      products: JSON.parse(JSON.stringify(products)),
-    },
-  };
 }
