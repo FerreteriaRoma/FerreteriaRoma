@@ -12,6 +12,7 @@ import { Product } from "@/models/Product";
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
 
 // Función para formatear el precio en pesos colombianos
 const formatCurrency = (amount) => {
@@ -71,6 +72,29 @@ const buttonVariants = {
     tap: { scale: 0.95 }
 };
 
+const WhatsAppButton = styled.a`
+    position: absolute; // Asegúrate de que sea absolute
+    bottom: -20px; // Ajusta la posición según sea necesario
+    right: 30px; // Mantener a la derecha
+    background-color: #25D366; /* Color verde de WhatsApp */
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-size: 24px; /* Tamaño del icono */
+    
+    &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+`;
+
+
+
 export default function ProductPage({ product }) {
     const { addProduct } = useContext(CartContext);
     const [mobileNavActive, setMobileNavActive] = useState(false); // Estado para manejar mobileNavActive
@@ -86,6 +110,7 @@ export default function ProductPage({ product }) {
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
+                                style={{ position: 'relative' }} // Asegúrate de agregar esto
                             >
                                 <WhiteBox>
                                     <ProductImages images={product.images} />
@@ -95,6 +120,7 @@ export default function ProductPage({ product }) {
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
+                                style={{ position: 'relative' }} // Agregar position: relative aquí también
                             >
                                 <Title>{product.title}</Title>
                                 <p>{product.description}</p>
@@ -114,6 +140,10 @@ export default function ProductPage({ product }) {
                                         </motion.div>
                                     </div>
                                 </PriceRow>
+                                {/* Botón de WhatsApp */}
+                                <WhatsAppButton href="https://wa.me/5730012345678" target="_blank">
+                                    <FaWhatsapp size={24} /> {/* Cambia el emoji por el icono de WhatsApp */}
+                                </WhatsAppButton>
                             </motion.div>
                         </ColWrapper>
                     </Center>
@@ -121,6 +151,7 @@ export default function ProductPage({ product }) {
             )}
             <Footer />
         </MainContainer>
+
     );
 }
 
