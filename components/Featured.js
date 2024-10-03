@@ -8,13 +8,14 @@ import { CartContext } from "./CartContext";
 
 const Bg = styled.div`
   margin-top: 20px;
-  background: linear-gradient(135deg, #4a4a4a, #2c2c2c); /* Degradado en tonos grises */
+  background: linear-gradient(135deg, #4a4a4a, #2c2c2c);
   color: #fff;
   padding: 50px 0;
   border-radius: 15px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1; /* Establecer z-index para asegurarse de que los círculos queden debajo */
 `;
 
 const FloatingShape = styled.div`
@@ -22,6 +23,7 @@ const FloatingShape = styled.div`
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   animation: floating 8s ease-in-out infinite;
+  z-index: 0; /* Asegura que los círculos queden detrás del contenido */
 `;
 
 const Circle1 = styled(FloatingShape)`
@@ -94,6 +96,7 @@ const Title = styled.h1`
   margin: 0;
   font-weight: normal;
   font-size: 1.5rem;
+  z-index: 1; /* Asegurarse de que el texto esté por encima de los círculos */
 
   @media screen and (min-width: 768px) {
     font-size: 3rem;
@@ -103,6 +106,7 @@ const Title = styled.h1`
 const Desc = styled.p`
   color: #f0f0f0;
   font-size: 0.8rem;
+  z-index: 1; /* Asegurarse de que la descripción esté por encima */
 `;
 
 const ColumnsWrapper = styled.div`
@@ -116,6 +120,7 @@ const ColumnsWrapper = styled.div`
     display: block;
     margin: 0 auto;
     object-fit: cover;
+    z-index: 1; /* Asegurarse de que la imagen esté por encima de los círculos */
   }
 
   div:nth-child(1) {
@@ -133,12 +138,14 @@ const ColumnsWrapper = styled.div`
 const Column = styled.div`
   display: flex;
   align-items: center;
+  z-index: 1; /* Asegurarse de que las columnas estén por encima */
 `;
 
 const ButtonsWrapper = styled.div`
   margin-top: 25px;
   display: flex;
   gap: 10px;
+  z-index: 1; /* Asegurarse de que los botones estén por encima */
 `;
 
 export default function Featured({ product }) {
@@ -150,7 +157,7 @@ export default function Featured({ product }) {
 
   return (
     <Bg>
-      {/* Círculos y rectángulos decorativos dispersos */}
+      {/* Círculos y rectángulos decorativos */}
       <Circle1 />
       <Circle2 />
       <Circle3 />
