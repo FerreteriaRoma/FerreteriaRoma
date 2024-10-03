@@ -108,7 +108,7 @@ export default function YoutubeChanel() {
           En nuestro canal de Youtube encontrarás contenido exclusivo, tutoriales y las últimas noticias sobre nuestros productos.
         </YoutubeDesc>
         <YoutubeButton 
-          href="https://www.youtube.com" 
+          href="https://www.youtube.com/channel/UCUgC1XHWzIbqHRAhqCa5Eug" 
           target="_blank" 
           rel="noopener noreferrer">
           Ir al canal de Youtube
