@@ -95,17 +95,19 @@ const Rect2 = styled(FloatingShape)`
 const Title = styled.h1`
   margin: 0;
   font-weight: normal;
-  font-size: 1.5rem;
+  font-family: "Indie Flower", cursive;
+  font-size: 1.7rem;
   z-index: 1; /* Asegurarse de que el texto esté por encima de los círculos */
 
   @media screen and (min-width: 768px) {
-    font-size: 3rem;
+    font-size: 3.5rem;
   }
 `;
 
 const Desc = styled.p`
   color: #f0f0f0;
-  font-size: 0.8rem;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
   z-index: 1; /* Asegurarse de que la descripción esté por encima */
 `;
 

@@ -28,7 +28,8 @@ export const ButtonStyle = css`
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
   font-weight: 400;
   position: relative;
   color: #fff;

@@ -69,7 +69,8 @@ const WhiteBox = styled(motion.div)`
 
 const Title = styled.a`
   font-weight: normal;
-  font-size: 0.9rem;
+  font-family: "Indie Flower", cursive;
+  font-size: 1.1rem;
   color: #333;
   text-decoration: none;
   margin: 0;
@@ -95,12 +96,13 @@ const PriceRow = styled.div`
 `;
 
 const Price = styled.div`
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-family: "Caveat", cursive;
   font-weight: 500;
   text-align: right;
 
   @media screen and (min-width: 786px) {
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: 500;
     text-align: right;
   }

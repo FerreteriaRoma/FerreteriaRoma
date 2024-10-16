@@ -57,6 +57,7 @@ const PriceRow = styled.div`
 
 const Price = styled.span`
     font-size: 1.4rem;
+    font-family: "Caveat", cursive;
     font-weight: bold; // Hacer el precio más destacado
     color: #333; // Color oscuro para mejor contraste
 `;
@@ -93,6 +94,11 @@ const WhatsAppButton = styled.a`
     }
 `;
 
+const ProductDescripton = styled.p`
+    font-family: "Indie Flower", cursive;
+    font-size: 1.2rem;
+`;
+
 
 
 export default function ProductPage({ product }) {
@@ -110,7 +116,7 @@ export default function ProductPage({ product }) {
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
-                                style={{ position: 'relative' }} // Asegúrate de agregar esto
+                                style={{ position: 'relative' }} 
                             >
                                 <WhiteBox>
                                     <ProductImages images={product.images} />
@@ -120,10 +126,10 @@ export default function ProductPage({ product }) {
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
-                                style={{ position: 'relative' }} // Agregar position: relative aquí también
+                                style={{ position: 'relative' }} 
                             >
                                 <Title>{product.title}</Title>
-                                <p>{product.description}</p>
+                                <ProductDescripton>{product.description}</ProductDescripton>
                                 <PriceRow>
                                     <div>
                                         <Price>{formatCurrency(product.price)}</Price>
@@ -141,8 +147,8 @@ export default function ProductPage({ product }) {
                                     </div>
                                 </PriceRow>
                                 {/* Botón de WhatsApp */}
-                                <WhatsAppButton href="https://wa.me/5730012345678" target="_blank">
-                                    <FaWhatsapp size={24} /> {/* Cambia el emoji por el icono de WhatsApp */}
+                                <WhatsAppButton href="https://wa.me/573162323422" target="_blank">
+                                    <FaWhatsapp size={24} />
                                 </WhatsAppButton>
                             </motion.div>
                         </ColWrapper>

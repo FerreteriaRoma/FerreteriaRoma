@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const Title = styled.a`
   font-weight: 700;
+  font-family: "Indie Flower", cursive;
   font-size: 2rem;
   color: #222;
   text-decoration: none;

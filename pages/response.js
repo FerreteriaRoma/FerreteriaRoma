@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { CartContext } from "@/components/CartContext";
 import Center from "@/components/Center";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Header from "@/components/HeaderI";
 import styled, { keyframes } from "styled-components";
 
 const PageWrapper = styled.div`
@@ -38,13 +38,15 @@ const Box = styled.div`
 `;
 
 const Heading = styled.h2`
-    font-size: 1.8rem;
+    font-family: "Caveat", cursive;
+    font-size: 2.5rem;
     margin-bottom: 20px;
     color: #333;
 `;
 
 const Paragraph = styled.p`
-    font-size: 1rem;
+    font-size: 1.3rem;
+    font-family: "Indie Flower", cursive;
     line-height: 1.6;
     color: #666;
     margin-bottom: 20px;
@@ -112,7 +114,7 @@ export default function Response() {
                         <Box>
                             <Heading>Gracias por su compra</Heading>
                             <Paragraph>
-                                Envíe a nuestro WhatsApp +57 123 456 789 el comprobante de pago que fue 
+                                Envíe a nuestro WhatsApp +57 316 2323422 el comprobante de pago que fue 
                                 enviado al correo electrónico registrado
                                 en el formulario, por ese medio se le notificará el estado de su compra.
                             </Paragraph>

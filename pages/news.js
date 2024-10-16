@@ -24,9 +24,9 @@ const ContentWrapper = styled.div`
 
 const TitleStyled = styled.a`
   text-align: center;
-  font-size: 1.7rem;
+  font-family: "Caveat", cursive;
+  font-size: 2.5rem;
   font-weight: 700;
-  font-size: 2rem;
   color: #222;
   text-decoration: none;
   margin: 30px 0 20px;

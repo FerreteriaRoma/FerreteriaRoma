@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
     <>
     <Helmet>
       <style>
-        @import url(&apos;https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap);
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Indie+Flower&family=Shadows+Into+Light&family=Space+Grotesk:wght@300..700&display=swap');
       </style>
     </Helmet>
       <GlobalStyles />

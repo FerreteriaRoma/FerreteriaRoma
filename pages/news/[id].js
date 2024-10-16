@@ -10,7 +10,8 @@ import ImageCarousel from "@/components/NewsImages";
 
 const Title = styled.a`
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 2em;
+  font-family: "Space Grotesk", sans-serif;
   color: #222;
   text-decoration: none;
   margin: 30px 0 20px;
@@ -73,6 +74,11 @@ const ColWrapper = styled.div`
   }
 `;
 
+const NewsDescription = styled.p`
+  font-family: "Indie Flower", cursive;
+  font-size: 1.2rem;
+`;
+
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -101,7 +107,7 @@ export default function NewPage({ news }) {
                 animate="visible"
               >
                 <Title>{news.title}</Title>
-                <p>{news.description}</p>
+                <NewsDescription>{news.description}</NewsDescription>
               </motion.div>
             </ColWrapper>
           </Center>

@@ -58,7 +58,7 @@ const YoutubeSection = styled.div`
 
 const YoutubeTitle = styled.h2`
   margin-bottom: 20px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Caveat", cursive;
   font-size: 1.5rem;
 
   @media screen and (min-width: 768px) {
@@ -68,6 +68,7 @@ const YoutubeTitle = styled.h2`
 
 const YoutubeDesc = styled.p`
   font-size: 1rem;
+  font-family: "Caveat", cursive;
   margin-bottom: 30px;
   max-width: 700px;
   margin-left: auto;
@@ -76,7 +77,7 @@ const YoutubeDesc = styled.p`
   color: #f0f0f0;
 
   @media screen and (min-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 `;
 

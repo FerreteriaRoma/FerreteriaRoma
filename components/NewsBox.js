@@ -100,7 +100,8 @@ const ProductWrapper = styled(motion.div)`
 
 const Title = styled.a`
   font-weight: 600;
-  font-size: 1.4rem;
+  font-family: "Caveat", cursive;
+  font-size: 1.8rem;
   color: #222;
   text-decoration: none;
   margin: 0;
@@ -135,7 +136,8 @@ const PriceRow = styled.div`
 `;
 
 const Entrance = styled.a`
-  font-size: 0.7rem;
+  font-size: 0.9rem;
+  font-family: "Indie Flower", cursive;
   font-weight: 400;
   color: #444;
   text-decoration: none;

@@ -33,6 +33,8 @@ const ColumnsWrapper = styled.div`
 
 const ProductInfoCell = styled.td`
     padding: 10px 0;
+    font-family: "Caveat", cursive;
+    font-size: 1.2rem;
 `;
 
 const ProductImageBox = styled.div`

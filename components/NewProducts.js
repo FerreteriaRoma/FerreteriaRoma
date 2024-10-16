@@ -4,6 +4,7 @@ import ProductsGridAnimated from "./ProductsGridAnimated";
 
 const Title = styled.h2`
   font-weight: 700;
+  font-family: "Indie Flower", cursive;
   font-size: 2rem;
   color: #222;
   text-decoration: none;
