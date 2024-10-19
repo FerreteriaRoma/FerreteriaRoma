@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema, model, models } = mongoose;
 
 const OrderSchema = new Schema({
-    line_items: [ // Cambia Object a un array de objetos para representar mejor los items
+    line_items: [
         {
             quantity: Number,
             price_data: {
@@ -22,8 +22,8 @@ const OrderSchema = new Schema({
     StreetAddress: String,
     paid: Boolean,
     ref_payco: String,
-    total_amount: Number, // Agrega este campo para el valor total de la orden
-    order_number: String, // Agrega este campo para el número de orden
+    total_amount: Number, 
+    order_number: String, 
 }, {
     timestamps: true,
 });

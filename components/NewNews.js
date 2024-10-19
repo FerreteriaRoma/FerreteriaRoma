@@ -1,15 +1,15 @@
-import styled from "styled-components";
 import Center from "./Center";
-import ProductsGridAnimated from "./ProductsGridAnimated";
+import NewsGrid from "./NewsGrid";
+import styled from "styled-components";
 
-const Title = styled.h2`
+const Title = styled.a`
   font-weight: 700;
   font-family: "Indie Flower", cursive;
   font-size: 2rem;
   color: #222;
   text-decoration: none;
   margin: 30px 0 20px;
-  margin-top: 20px;
+  margin-top: 15px;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -33,11 +33,11 @@ const Title = styled.h2`
   }
 `;
 
-export default function NewProducts({ products, mobileNavActive }) {
-  return (
-    <Center>
-      <Title>Recién llegados</Title>
-      <ProductsGridAnimated products={products} mobileNavActive={mobileNavActive} />
-    </Center>
-  );
+export default function NewNews({ news, mobileNavActive }) {
+    return (
+        <Center>
+            <Title>Nuevas noticias</Title>
+            <NewsGrid news={news} mobileNavActive={mobileNavActive}/>
+        </Center>
+    )
 }

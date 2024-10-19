@@ -8,21 +8,24 @@ const StyleProductGrid = styled.div`
   margin-top: 30px;
 
   @media screen and (min-width: 800px) {
-    grid-template-columns: 1fr 1fr 1fr ; /* 4 columnas en pantallas medianas y grandes */
+    grid-template-columns: 1fr 1fr 1fr; /* 3 columnas en pantallas medianas y grandes */
   }
 
   @media screen and (min-width: 1000px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columnas en pantallas medianas y grandes */
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* 4 columnas en pantallas medianas y grandes */
   }
 `;
 
-export default function ProductsGrid({ products }) {
+export default function ProductsGrid({ products, mobileNavActive }) {
   return (
     <StyleProductGrid>
-      {products?.length > 0 &&
+      {products?.length > 0 ? (
         products.map((product) => (
-          <ProductBox key={product._id} {...product} />
-        ))}
+          <ProductBox key={product._id} {...product} mobileNavActive={mobileNavActive} />
+        ))
+      ) : (
+        <p>No se encontraron productos.</p>
+      )}
     </StyleProductGrid>
   );
 }
