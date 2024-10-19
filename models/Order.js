@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema, model, models } = mongoose;
 
 const OrderSchema = new Schema({
-    line_items: [
+    line_items: [ 
         {
             quantity: Number,
             price_data: {
@@ -16,6 +16,9 @@ const OrderSchema = new Schema({
         },
     ],
     name: String,
+    selectedDocumentType: String,
+    documentNumber: String,
+    selectedRegimen: String,
     email: String,
     phone: String,
     city: String,

@@ -1,6 +1,6 @@
 // /pages/api/products.js
-import { Product } from '@/models/Product'; 
-import { mongooseConnect } from '@/lib/mongoose'; 
+import { Product } from '@/models/Product'; // Importa tu modelo de Producto
+import { mongooseConnect } from '@/lib/mongoose'; // Asegúrate de tener la conexión a la base de datos
 
 export default async function handler(req, res) {
   // Conectar a la base de datos

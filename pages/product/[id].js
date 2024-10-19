@@ -2,16 +2,17 @@ import Button from "@/components/Button";
 import { CartContext } from "@/components/CartContext";
 import Center from "@/components/Center";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Header from "@/components/HeaderI";
 import CartIcon from "@/components/icons/Cart";
 import ProductImages from "@/components/ProductImages";
 import Title from "@/components/Title";
 import WhiteBox from "@/components/WhiteBox";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
 
 // Función para formatear el precio en pesos colombianos
 const formatCurrency = (amount) => {
@@ -56,6 +57,7 @@ const PriceRow = styled.div`
 
 const Price = styled.span`
     font-size: 1.4rem;
+    font-family: "Caveat", cursive;
     font-weight: bold; // Hacer el precio más destacado
     color: #333; // Color oscuro para mejor contraste
 `;
@@ -71,55 +73,91 @@ const buttonVariants = {
     tap: { scale: 0.95 }
 };
 
+const WhatsAppButton = styled.a`
+    position: absolute; // Asegúrate de que sea absolute
+    bottom: -20px; // Ajusta la posición según sea necesario
+    right: 30px; // Mantener a la derecha
+    background-color: #25D366; /* Color verde de WhatsApp */
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-size: 24px; /* Tamaño del icono */
+    
+    &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+`;
+
+const ProductDescripton = styled.p`
+    font-family: "Indie Flower", cursive;
+    font-size: 1.2rem;
+`;
+
+
+
 export default function ProductPage({ product }) {
     const { addProduct } = useContext(CartContext);
+    const [mobileNavActive, setMobileNavActive] = useState(false); // Estado para manejar mobileNavActive
 
     return (
         <MainContainer>
-            <Header />
-            <Content>
-                <Center>
-                    <ColWrapper>
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <WhiteBox>
-                                <ProductImages images={product.images} />
-                            </WhiteBox>
-                        </motion.div>
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <Title>{product.title}</Title>
-                            <p>{product.description}</p>
-                            <PriceRow>
-                                <div>
-                                    <Price>
-                                        {formatCurrency(product.price)}
-                                    </Price>
-                                </div>
-                                <div>
-                                    <motion.div
-                                        variants={buttonVariants}
-                                        whileHover="hover"
-                                        whileTap="tap"
-                                    >
-                                        <Button $primary onClick={() => addProduct(product._id)}>
-                                            <CartIcon /> Añadir al carrito
-                                        </Button>
-                                    </motion.div>
-                                </div>
-                            </PriceRow>
-                        </motion.div>
-                    </ColWrapper>
-                </Center>
-            </Content>
+            <Header mobileNavActive={mobileNavActive} onMobileNavToggle={() => setMobileNavActive(!mobileNavActive)} />
+            {!mobileNavActive && ( // Solo renderizar el contenido si mobileNavActive es false
+                <Content>
+                    <Center>
+                        <ColWrapper>
+                            <motion.div
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                                style={{ position: 'relative' }} 
+                            >
+                                <WhiteBox>
+                                    <ProductImages images={product.images} />
+                                </WhiteBox>
+                            </motion.div>
+                            <motion.div
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                                style={{ position: 'relative' }} 
+                            >
+                                <Title>{product.title}</Title>
+                                <ProductDescripton>{product.description}</ProductDescripton>
+                                <PriceRow>
+                                    <div>
+                                        <Price>{formatCurrency(product.price)}</Price>
+                                    </div>
+                                    <div>
+                                        <motion.div
+                                            variants={buttonVariants}
+                                            whileHover="hover"
+                                            whileTap="tap"
+                                        >
+                                            <Button $primary onClick={() => addProduct(product._id)}>
+                                                <CartIcon /> Añadir al carrito
+                                            </Button>
+                                        </motion.div>
+                                    </div>
+                                </PriceRow>
+                                {/* Botón de WhatsApp */}
+                                <WhatsAppButton href="https://wa.me/573162323422" target="_blank">
+                                    <FaWhatsapp size={24} />
+                                </WhatsAppButton>
+                            </motion.div>
+                        </ColWrapper>
+                    </Center>
+                </Content>
+            )}
             <Footer />
         </MainContainer>
+
     );
 }
 

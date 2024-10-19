@@ -6,7 +6,7 @@ import { News } from "@/models/News";
 import styled from "styled-components";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import ImageCarousel from "@/components/NewsImage";
+import ImageCarousel from "@/components/NewsImages";
 
 const Title = styled.a`
   font-weight: 700;

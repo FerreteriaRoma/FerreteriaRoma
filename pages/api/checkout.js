@@ -8,9 +8,9 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    const { name, email, phone, city, streetAddress, products } = req.body;
+    const { name, email, selectedDocumentType, documentNumber, selectedRegimen, phone, city, streetAddress, products } = req.body;
 
-    if (!name || !email || !city || !streetAddress || !products) {
+    if (!name || !selectedDocumentType || !documentNumber || !selectedRegimen || !email || !city || !streetAddress || !products) {
         return res.status(400).json({ error: 'Por favor complete el formulario' });
     }
 
@@ -48,11 +48,13 @@ export default async function handler(req, res) {
         const order = await Order.create({
             line_items,
             name,
+            selectedDocumentType,
+            documentNumber,
+            selectedRegimen,
             email,
             phone,
             city,
             StreetAddress: streetAddress,
-            paid: false,
             ref_payco: generatedRefPayco,
             total_amount: totalAmount, // Guarda el valor total
             order_number: orderNumber, // Guarda el número de orden
