@@ -108,7 +108,7 @@ export default function Header({ mobileNavActive, onMobileNavToggle }) {
             <Img src="/img/LogoSinFondo.png" alt="Logo" />
           </Logo>
           <StyleNav mobileNavActive={mobileNavActive}>
-            <NavLink href={"/"}>Principal</NavLink>
+            <NavLink href={"/index"}>Principal</NavLink>
             <NavLink href={"/products"}>Todos los productos</NavLink>
             <NavLink href={"/news"}>Todas las noticias</NavLink>
             <NavLink href={"/cart"}>Carrito ({cartProducts.length})</NavLink>
