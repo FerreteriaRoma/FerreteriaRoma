@@ -197,7 +197,7 @@ export default function CartPage() {
                         script.setAttribute('data-epayco-test', 'true');
                         script.setAttribute('data-epayco-external', 'false');
                         script.setAttribute('data-epayco-ref-payco', result.ref_payco);
-                        script.setAttribute('data-epayco-response', 'http://localhost:3000/response');
+                        script.setAttribute('data-epayco-response', 'https://ferreteriaroma.com.co/response');
                         script.setAttribute('data-epayco-confirmation', 'http://localhost:3000/api/confirmation');
                         script.setAttribute('data-epayco-methodconfirmation', 'post');
                         script.setAttribute('data-epayco-type-doc-billing', 'CC');
