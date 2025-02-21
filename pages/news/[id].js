@@ -77,6 +77,9 @@ const ColWrapper = styled.div`
 const NewsDescription = styled.p`
   font-family: "Indie Flower", cursive;
   font-size: 1.2rem;
+  white-space: pre-line;
+  line-height: 1.5; 
+  margin: 1rem 0; 
 `;
 
 const containerVariants = {
