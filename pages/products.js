@@ -53,67 +53,60 @@ const TitleStyled = styled.a`
   }
 `;
 
+const Emptystate = styled.p`
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+  border: 2px dashed #eee;
+  margin: 2rem;
+  border-radius: 8px;
+`;
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchProducts(); // Llamar a la API de productos al cargar el componente
-  }, []);
-
   const fetchProducts = async (category = '') => {
     setLoading(true);
     try {
-      let url = "/api/products";
-      if (category) {
-        url += `?category=${category}`; // Filtra por categoría si se proporciona
-      }
+      const url = category ? `/api/products?category=${category}` : '/api/products';
       const response = await axios.get(url);
-      setProducts(response.data);
+      setProducts(response.data || []);
     } catch (error) {
-      console.error("Error fetching products:", error); // Manejo de errores
+      console.error("Error fetching products:", error);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Función modificada para manejar el cambio de categoría
-const handleCategoryChange = async (categoryId) => {
-  try {
-    const url = categoryId ? `/api/products?category=${categoryId}` : '/api/products';
-    const response = await axios.get(url);
-    
-    // Validar si hay productos
-    if (response.data.length === 0) {
-      setProducts([]); // Establecer array vacío
-      setSponsoredProducts([]); // Limpiar productos apadrinados si es necesario
-      return;
-    }
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    // Si hay productos, procesar normalmente
-    const sponsored = response.data.filter(product => product.sponsored);
-    setProducts(response.data);
-    setSponsoredProducts(sponsored);
-
-  } catch (error) {
-    console.error("Error cargando productos:", error);
-    setProducts([]); // Asegurar estado limpio en caso de error
-    setSponsoredProducts([]);
-  }
-};
+  const handleCategoryChange = (categoryId) => {
+    fetchProducts(categoryId);
+  };
 
   return (
     <PageContainer>
       <Header />
       <Content>
         <TitleStyled>Todos los productos</TitleStyled>
-        <CategoryFilter 
-          onCategoryChange={(categoryId, timestamp) => handleCategoryChange(categoryId)}
-        />
+        <CategoryFilter onCategoryChange={handleCategoryChange} />
         {loading ? (
           <p>Cargando productos...</p>
         ) : (
-          <ProductsGrid products={products} />
+          <>
+            {products.length > 0 ? (
+              <ProductsGrid products={products} />
+            ) : (
+              <Emptystate>
+                No se encontraron productos en esta categoría
+              </Emptystate>
+            )}
+          </>
         )}
       </Content>
       <Footer />
