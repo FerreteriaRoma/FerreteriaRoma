@@ -15,11 +15,17 @@ export default async function handler(req, res) {
     query.category = category;
   }
 
-  try {
-    // Buscar productos, filtrando por la categoría si fue enviada
-    const products = await Product.find(query).populate('category'); // Usar 'populate' para obtener detalles de la categoría
-    res.status(200).json(products); // Enviar productos como respuesta
-  } catch (error) {
-    res.status(500).json({ error: 'Error obteniendo los productos' });
-  }
+  // Asegurar que siempre devuelva un array, incluso vacío
+  router.get('/', async (req, res) => {
+    try {
+      const { category } = req.query;
+      const query = category ? { category } : {};
+      
+      const products = await Product.find(query).lean() || [];
+      res.json(products);
+      
+    } catch (error) {
+      res.status(500).json([]); // Devuelve array vacío en errores
+    }
+  });
 }
