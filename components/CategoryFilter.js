@@ -38,22 +38,31 @@ export default function CategoryFilter({ onCategoryChange }) {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Llamada a la API para obtener todas las categorías
-    axios.get("/api/categories").then((response) => {
-      setCategories(response.data);
-    });
-  }, []);
+    axios.get("/api/categories")
+      .then((response) => {
+        setCategories(response.data);
+        // Cargar productos iniciales al montar el componente
+        onCategoryChange(''); 
+      })
+      .catch(error => {
+        console.error("Error cargando categorías:", error);
+      });
+  }, []); // Asegúrate de tener el array vacío aquí
 
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     setSelectedCategory(category);
-    onCategoryChange(category); // Pasamos la categoría seleccionada al componente padre
+    onCategoryChange(category);
   };
 
   return (
     <FilterContainer>
-      <StyledSelect value={selectedCategory} onChange={handleCategoryChange}>
-        <option value="">Buscar por categoria</option>
+      <StyledSelect 
+        value={selectedCategory} 
+        onChange={handleCategoryChange}
+        key={categories.length} // Fuerza reinicio al actualizar categorías
+      >
+        <option value="" disabled hidden>Buscar por categoría</option>
         <option value="">Todas las Categorías</option>
         {categories.map((category) => (
           <option key={category._id} value={category._id}>
