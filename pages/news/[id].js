@@ -74,12 +74,29 @@ const ColWrapper = styled.div`
   }
 `;
 
-const NewsDescription = styled.p`
+function formatText(text) {
+  // Convierte **texto** a <strong>
+  const withBold = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  
+  // Sanitización básica (remover scripts y tags no permitidos)
+  const sanitized = withBold
+    .replace(/<script.*?>.*?<\/script>/gi, '')
+    .replace(/<\/?(?!strong)[^>]+>/g, '');
+  
+  return sanitized;
+}
+
+const NewsDescription = styled.div`
   font-family: "Indie Flower", cursive;
   font-size: 1.2rem;
   white-space: pre-line;
-  line-height: 1.5; 
-  margin: 1rem 0; 
+  line-height: 1.5;
+  margin: 1rem 0;
+
+  strong {
+    font-weight: bold;
+    color: #333;
+  }
 `;
 
 const containerVariants = {
@@ -110,7 +127,9 @@ export default function NewPage({ news }) {
                 animate="visible"
               >
                 <Title>{news.title}</Title>
-                <NewsDescription>{news.description}</NewsDescription>
+                <NewsDescription 
+                  dangerouslySetInnerHTML={{ __html: formatText(news.description) }} 
+                />
               </motion.div>
             </ColWrapper>
           </Center>
