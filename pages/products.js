@@ -77,16 +77,39 @@ export default function ProductsPage() {
     }
   };
 
-  const handleCategoryChange = (category) => {
-    fetchProducts(category); // Llama a la API con la categoría seleccionada
-  };
+  // Función modificada para manejar el cambio de categoría
+const handleCategoryChange = async (categoryId) => {
+  try {
+    const url = categoryId ? `/api/products?category=${categoryId}` : '/api/products';
+    const response = await axios.get(url);
+    
+    // Validar si hay productos
+    if (response.data.length === 0) {
+      setProducts([]); // Establecer array vacío
+      setSponsoredProducts([]); // Limpiar productos apadrinados si es necesario
+      return;
+    }
+
+    // Si hay productos, procesar normalmente
+    const sponsored = response.data.filter(product => product.sponsored);
+    setProducts(response.data);
+    setSponsoredProducts(sponsored);
+
+  } catch (error) {
+    console.error("Error cargando productos:", error);
+    setProducts([]); // Asegurar estado limpio en caso de error
+    setSponsoredProducts([]);
+  }
+};
 
   return (
     <PageContainer>
       <Header />
       <Content>
         <TitleStyled>Todos los productos</TitleStyled>
-        <CategoryFilter onCategoryChange={handleCategoryChange} /> {/* Filtro de categoría arriba de ProductsGrid */}
+        <CategoryFilter 
+          onCategoryChange={(categoryId, timestamp) => handleCategoryChange(categoryId)}
+        />
         {loading ? (
           <p>Cargando productos...</p>
         ) : (
