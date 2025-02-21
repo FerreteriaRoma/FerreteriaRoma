@@ -38,23 +38,27 @@ export default function CategoryFilter({ onCategoryChange }) {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    // Llamada a la API para obtener todas las categorías
     axios.get("/api/categories").then((response) => {
       setCategories(response.data);
+      
+      // Nueva parte: Cargar todos los productos al montar el componente
+      onCategoryChange(''); // Esto activará la carga inicial
     });
-  }, []);
+  }, []); // Asegúrate de que este efecto solo se ejecute una vez
 
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     setSelectedCategory(category);
-    onCategoryChange(category); // Pasamos la categoría seleccionada al componente padre
+    onCategoryChange(category);
   };
 
   return (
     <FilterContainer>
-      <StyledSelect value={selectedCategory} onChange={handleCategoryChange}>
-        <option value="">Buscar por categoria</option>
-        <option value="">Todas las Categorías</option>
+      <StyledSelect 
+        value={selectedCategory} 
+        onChange={handleCategoryChange}
+      >
+        <option value="" disabled>Buscar por categoria</option> {/* Cambio importante aquí */}
         {categories.map((category) => (
           <option key={category._id} value={category._id}>
             {category.name}
