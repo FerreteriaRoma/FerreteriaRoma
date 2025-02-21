@@ -59,6 +59,7 @@ export default function CategoryFilter({ onCategoryChange }) {
         onChange={handleCategoryChange}
       >
         <option value="" disabled>Buscar por categoria</option> {/* Cambio importante aquí */}
+        <option value="">Todas las Categorías</option>
         {categories.map((category) => (
           <option key={category._id} value={category._id}>
             {category.name}
