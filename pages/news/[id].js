@@ -75,28 +75,29 @@ const ColWrapper = styled.div`
 `;
 
 function formatText(text) {
-  // Convierte **texto** a <strong>
-  const withBold = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Expresión regular corregida para capturar exactamente entre **
+  const withBold = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   
-  // Sanitización básica (remover scripts y tags no permitidos)
-  const sanitized = withBold
-    .replace(/<script.*?>.*?<\/script>/gi, '')
-    .replace(/<\/?(?!strong)[^>]+>/g, '');
-  
-  return sanitized;
+  // Mantener saltos de línea y sanitización básica
+  return withBold
+    .replace(/\n/g, '<br/>')  // Convertir saltos de línea
+    .replace(/<script.*?<\/script>/g, ''); // Eliminar scripts
 }
 
 const NewsDescription = styled.div`
   font-family: "Indie Flower", cursive;
   font-size: 1.2rem;
-  white-space: pre-line;
   line-height: 1.5;
   margin: 1rem 0;
-
+  
+  /* Estilos SOLO para elementos strong */
   strong {
     font-weight: bold;
     color: #333;
   }
+  
+  /* Resetear estilo para el texto general */
+  font-weight: normal;
 `;
 
 const containerVariants = {
