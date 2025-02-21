@@ -49,7 +49,9 @@ export default function CategoryFilter({ onCategoryChange }) {
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     setSelectedCategory(category);
-    onCategoryChange(category);
+    
+    // Forzar actualización incluso con misma categoría
+    onCategoryChange(category, Date.now()); 
   };
 
   return (
